@@ -1,7 +1,9 @@
-<div class="flex justify-between w-full items-center pr-1">
+<div
+  class="flex justify-between w-full items-center py-4 px-1.5 bg-white border border-[#efefef] border-l-0"
+>
   <button (click)="toggleSidebar()" class="cursor-pointer">
     <span
-      class="material-symbols-outlined text-gray-400 mt-3 p-1.5 hover:bg-gray-200 hover:text-gray-900 rounded-lg"
+      class="material-symbols-outlined text-gray-400 p-1.5 hover:bg-gray-200 hover:text-gray-900 rounded-lg"
       >{{
         sidenavToggleService.sidebarVisible()
           ? "left_panel_close"
@@ -9,6 +11,7 @@
       }}
     </span>
   </button>
-  <div>filter</div>
-  <div>user</div>
+  <img src="assets/images/logo.svg" alt="app logo" />
+
+  <img src="assets/images/account_image.svg" alt="user icon" />
 </div>

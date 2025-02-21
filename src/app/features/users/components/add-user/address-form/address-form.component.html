@@ -1,0 +1,56 @@
+<h1 class="font-semibold">{{ title() }}</h1>
+
+<!-- <ng-container [formGroup]="formGroup"> -->
+<div class="w-full grid grid-cols-3 gap-6" [formGroupName]="controlKey()">
+  <div class="w-full">
+    <label
+      for="country"
+      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+    >
+      Country <span class="text-red-500">*</span>
+    </label>
+    <input
+      type="text"
+      id="country"
+      formControlName="country"
+      class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      placeholder="Georgia"
+      required
+    />
+  </div>
+
+  <div class="w-full">
+    <label
+      for="city"
+      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+    >
+      City <span class="text-red-500">*</span>
+    </label>
+    <input
+      type="text"
+      id="city"
+      formControlName="city"
+      class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      placeholder="City"
+      required
+    />
+  </div>
+
+  <div class="w-full">
+    <label
+      for="address"
+      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+    >
+      Address <span class="text-red-500">*</span>
+    </label>
+    <input
+      type="text"
+      id="address"
+      formControlName="address"
+      class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      placeholder="Apartment, Suite, etc."
+      required
+    />
+  </div>
+</div>
+<!-- </ng-container> -->

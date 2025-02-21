@@ -1,18 +1,23 @@
 <!-- drawer component -->
 <div
   id="drawer-navigation"
-  class="fixed top-0 left-0 z-40 h-screen overflow-y-auto transition-transform bg-white dark:bg-gray-800"
+  class="border border-[#efefef] fixed top-0 left-0 z-40 h-screen overflow-y-auto transition-all duration-300 ease-in-out bg-white dark:bg-gray-800"
   tabindex="-1"
   aria-labelledby="drawer-navigation-label"
   [ngClass]="{
-    'w-0': !sidenavToggleService.sidebarVisible(),
+    'w-0 overflow-hidden': !sidenavToggleService.sidebarVisible(),
     'w-64 p-4 ': sidenavToggleService.sidebarVisible()
   }"
 >
-  <img src="assets/images/logo.svg" alt="app logo" />
+  <h5
+    id="drawer-navigation-label"
+    class="text-base font-semibold text-gray-500 uppercase dark:text-gray-400"
+  >
+    Menu
+  </h5>
 
   <div class="py-4 overflow-y-auto">
-    <ul class="space-y-2 font-medium">
+    <ul class="space-y-2 font-medium overflow-hidden">
       <li>
         <a
           href="#"
