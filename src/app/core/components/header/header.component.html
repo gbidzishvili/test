@@ -1,0 +1,14 @@
+<div class="flex justify-between w-full items-center pr-1">
+  <button (click)="toggleSidebar()" class="cursor-pointer">
+    <span
+      class="material-symbols-outlined text-gray-400 mt-3 p-1.5 hover:bg-gray-200 hover:text-gray-900 rounded-lg"
+      >{{
+        sidenavToggleService.sidebarVisible()
+          ? "left_panel_close"
+          : "left_panel_open"
+      }}
+    </span>
+  </button>
+  <div>filter</div>
+  <div>user</div>
+</div>
