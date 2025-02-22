@@ -1,5 +1,5 @@
-export interface Client {
-  id: number;
+export interface User {
+  id: number | string;
   name: string;
   surname: string;
   gender: boolean;

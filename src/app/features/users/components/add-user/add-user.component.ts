@@ -9,6 +9,9 @@ import {
 import { CustomUploaderComponent } from '../custom-uploader/custom-uploader.component';
 import { CommonModule } from '@angular/common';
 import { AddressFormComponent } from './address-form/address-form.component';
+import { Store } from '@ngrx/store';
+import { addUser } from '../../../../state/users/user.action';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-add-user',
@@ -22,10 +25,11 @@ import { AddressFormComponent } from './address-form/address-form.component';
   templateUrl: './add-user.component.html',
 })
 export class AddUserComponent {
+  userService = inject(UserService);
   userForm!: FormGroup;
   customUploaderReset = signal<any>(false);
   fb = inject(FormBuilder);
-
+  store = inject(Store);
   ngOnInit(): void {
     this.initForm();
   }
@@ -48,6 +52,10 @@ export class AddUserComponent {
   onSubmit() {
     // if (this.userForm.valid) {
     console.log(this.userForm.value);
+    this.store.dispatch(addUser({ user: this.userForm.value }));
+    console.log(this.userForm.value);
+    this.userService.addUser(this.userForm.value).subscribe();
+    this.userForm.reset();
     // }
   }
 }
