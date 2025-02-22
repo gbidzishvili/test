@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { AppState } from '../app.state';
 import { Store } from '@ngrx/store';
 import { UserService } from '../../features/users/services/user.service';
-import { addUser, removeUser } from './user.action';
+import { addUser, removeUser, updateUser } from './user.action';
 import { catchError, of, switchMap, tap } from 'rxjs';
 
 @Injectable()
@@ -29,6 +29,21 @@ export class UserEffects {
             catchError((error) => {
               console.error('Error removing user:', error);
               return of({ type: '[User] Remove User Failure', error });
+            })
+          )
+        )
+      ),
+    { dispatch: false } // Do not dispatch any action after removal
+  );
+  updateUser$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(updateUser),
+        switchMap(({ id, user }) =>
+          this.userService.updateUser(id, user).pipe(
+            catchError((error) => {
+              console.error('Error removing user:', error);
+              return of({ type: '[User] Update User Failure', error });
             })
           )
         )

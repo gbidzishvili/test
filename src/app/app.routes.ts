@@ -9,4 +9,8 @@ export const routes: Routes = [
         (c) => c.AddUserComponent
       ),
   },
+  // {
+  //   path: 'user/:id',
+  //   loadComponent: () => import('./features/users/components/'),
+  // },
 ];

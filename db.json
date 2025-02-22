@@ -1,3 +1,80 @@
 {
-  "users": []
+  "users": [
+    {
+      "firstName": "",
+      "lastName": "",
+      "gender": "",
+      "personalNumber": "",
+      "phone": "",
+      "customUploader": [],
+      "legalAddress": {
+        "country": "",
+        "city": "",
+        "address": ""
+      },
+      "physicalAddress": {
+        "country": "",
+        "city": "",
+        "address": ""
+      },
+      "id": "abca6590-574d-4a76-b398-0e98fb001895"
+    },
+    {
+      "id": "275323f3-634d-409c-af81-4c99a474a2ad",
+      "firstName": "",
+      "lastName": "",
+      "gender": "",
+      "personalNumber": "",
+      "phone": "",
+      "customUploader": [],
+      "legalAddress": {
+        "country": "",
+        "city": "",
+        "address": ""
+      },
+      "physicalAddress": {
+        "country": "",
+        "city": "",
+        "address": ""
+      }
+    },
+    {
+      "id": "553e798a-ab88-4d26-899e-dc4901e2c391",
+      "firstName": "",
+      "lastName": "",
+      "gender": "",
+      "personalNumber": "",
+      "phone": "",
+      "customUploader": [],
+      "legalAddress": {
+        "country": "",
+        "city": "",
+        "address": ""
+      },
+      "physicalAddress": {
+        "country": "",
+        "city": "",
+        "address": ""
+      }
+    },
+    {
+      "id": "19e69441-518c-46c7-a195-4e16f373cc12",
+      "firstName": "",
+      "lastName": "",
+      "gender": "",
+      "personalNumber": "",
+      "phone": "",
+      "customUploader": [],
+      "legalAddress": {
+        "country": "",
+        "city": "",
+        "address": ""
+      },
+      "physicalAddress": {
+        "country": "",
+        "city": "",
+        "address": ""
+      }
+    }
+  ]
 }

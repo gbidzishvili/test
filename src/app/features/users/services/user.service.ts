@@ -12,12 +12,12 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   addUser(user: User): Observable<User> {
-    return this.http.post<User>(this.apiUrl, {
-      ...user,
-      id: '1',
-    });
+    return this.http.post<User>(this.apiUrl, user);
   }
   removeUser(id: string): Observable<string> {
     return this.http.delete<string>(`${this.apiUrl}/${id}`);
+  }
+  updateUser(id: string, user: User): Observable<User> {
+    return this.http.put<User>(`${this.apiUrl}/${id}`, user);
   }
 }
