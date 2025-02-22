@@ -1,7 +1,7 @@
 export interface User {
-  id: number | string;
-  name: string;
-  surname: string;
+  id: string;
+  firstName: string;
+  lastName: string;
   gender: boolean;
   personalNumber: number;
   mobileNumber: number;

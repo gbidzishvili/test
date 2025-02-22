@@ -50,4 +50,11 @@
 
 }
 
-<input (input)="log($event)" type="file" #uploader class="hidden" />
+<input
+  (input)="log($event)"
+  type="file"
+  accept="image/*"
+  #uploader
+  class="hidden"
+/>
+customUploader

@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { AppState } from '../app.state';
 import { Store } from '@ngrx/store';
-import { UserService } from '../../features/users/services/user.service';
+import { UsersService } from '../../features/users/services/users.service';
 import { addUser, removeUser, updateUser } from './user.action';
 import { catchError, of, switchMap, tap } from 'rxjs';
 
@@ -10,13 +10,13 @@ import { catchError, of, switchMap, tap } from 'rxjs';
 export class UserEffects {
   actions$ = inject(Actions);
   store = inject(Store<AppState>);
-  userService = inject(UserService);
+  usersService = inject(UsersService);
   addUser$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(addUser),
         tap(() => console.log('tap shimainc rame')),
-        switchMap(({ user }) => this.userService.addUser(user))
+        switchMap(({ user }) => this.usersService.addUser(user))
       ),
     { dispatch: false }
   );
@@ -25,7 +25,7 @@ export class UserEffects {
       this.actions$.pipe(
         ofType(removeUser),
         switchMap(({ id }) =>
-          this.userService.removeUser(id).pipe(
+          this.usersService.removeUser(id).pipe(
             catchError((error) => {
               console.error('Error removing user:', error);
               return of({ type: '[User] Remove User Failure', error });
@@ -40,7 +40,7 @@ export class UserEffects {
       this.actions$.pipe(
         ofType(updateUser),
         switchMap(({ id, updateUser }) =>
-          this.userService.updateUser(id, updateUser).pipe(
+          this.usersService.updateUser(id, updateUser).pipe(
             catchError((error) => {
               console.error('Error removing user:', error);
               return of({ type: '[User] Update User Failure', error });

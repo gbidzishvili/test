@@ -9,7 +9,7 @@ import {
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideStore } from '@ngrx/store';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withFetch } from '@angular/common/http';
 import { provideEffects } from '@ngrx/effects';
 import { UserEffects } from './state/users/user.effects';
 import { userReducer } from './state/users/user.reducer';
@@ -24,6 +24,6 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     provideStore({ user: userReducer }),
     provideEffects([UserEffects]),
-    provideHttpClient(),
+    provideHttpClient(withFetch()),
   ],
 };

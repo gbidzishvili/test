@@ -9,8 +9,18 @@ export const routes: Routes = [
         (c) => c.AddUserComponent
       ),
   },
-  // {
-  //   path: 'user/:id',
-  //   loadComponent: () => import('./features/users/components/'),
-  // },
+  {
+    path: 'users-list',
+    loadComponent: () =>
+      import(
+        './features/users/components/users-list/users-list.component'
+      ).then((c) => c.UsersListComponent),
+  },
+  {
+    path: 'user/:id',
+    loadComponent: () =>
+      import(
+        './features/users/components/user-details/user-details.component'
+      ).then((c) => c.UserDetailsComponent),
+  },
 ];

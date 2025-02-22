@@ -69,15 +69,15 @@
     <div class="col-span-6 flex justify-center">
       <div class="w-1/2">
         <label
-          for="phone"
+          for="mobileNumber"
           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
         >
-          Phone number <span class="text-red-500">*</span>
+          Mobile number <span class="text-red-500">*</span>
         </label>
         <input
           type="tel"
-          id="phone"
-          formControlName="phone"
+          id="mobileNumber"
+          formControlName="mobileNumber"
           class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           placeholder="(+995) ### ### ###"
           required
@@ -99,7 +99,7 @@
     <app-custom-uploader
       class="col-span-2"
       [customUploaderReset]="customUploaderReset()"
-      formControlName="customUploader"
+      formControlName="image"
     ></app-custom-uploader>
 
     <button

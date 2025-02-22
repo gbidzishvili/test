@@ -1,0 +1,4 @@
+<p>users-list works!</p>
+@for(user of users |async;track user.id){
+<li (click)="goToDetails(user.id)">{{ user.firstName }} {{ user.lastName }}</li>
+}

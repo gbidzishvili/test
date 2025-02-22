@@ -13,7 +13,7 @@ import {
   removeUser,
   updateUser,
 } from '../../../../../state/users/user.action';
-import { UserService } from '../../../services/user.service';
+import { UsersService } from '../../../services/users.service';
 import { v4 as uuidv4 } from 'uuid';
 
 @Component({
@@ -23,7 +23,7 @@ import { v4 as uuidv4 } from 'uuid';
   templateUrl: './add-user-form.component.html',
 })
 export class AddUserFormComponent {
-  userService = inject(UserService);
+  usersService = inject(UsersService);
   userForm!: FormGroup;
   customUploaderReset = signal<any>(false);
   fb = inject(FormBuilder);
@@ -37,8 +37,8 @@ export class AddUserFormComponent {
       lastName: ['', [Validators.required]],
       gender: ['', [Validators.required]],
       personalNumber: ['', [Validators.required, Validators.maxLength(11)]],
-      phone: ['', [Validators.required]],
-      customUploader: [
+      mobileNumber: ['', [Validators.required]],
+      image: [
         {
           value: [],
           disabled: false,
@@ -53,7 +53,6 @@ export class AddUserFormComponent {
       id: userId, // Add the generated id
       ...this.userForm.value, // Spread the form values
     };
-    console.log('logUser:', this.userForm.value, user);
     this.store.dispatch(addUser({ user }));
     this.userForm.reset();
   }

@@ -1,0 +1,25 @@
+@if ( user$ | async; as user){
+<section>
+  <article>
+    <img [src]="user?.image" alt="user image" class="w-12 h-12 rounded-full" />
+    <div>
+      <span>{{ user?.firstName }}</span
+      ><span>{{ user?.lastName }}</span>
+    </div>
+  </article>
+  <article>
+    <ul>
+      <li><span>User Id</span> {{ user?.id }}</li>
+      <li>{{ user?.gender }}</li>
+      <li>{{ user?.personalNumber }}</li>
+      <li>{{ user?.mobileNumber }}</li>
+      <li>{{ user?.legalAddress?.country }}</li>
+      <li>{{ user?.legalAddress?.city }}</li>
+      <li>{{ user?.legalAddress?.address }}</li>
+      <li>{{ user?.physicalAddress?.country }}</li>
+      <li>{{ user?.physicalAddress?.city }}</li>
+      <li>{{ user?.physicalAddress?.address }}</li>
+    </ul>
+  </article>
+</section>
+}
