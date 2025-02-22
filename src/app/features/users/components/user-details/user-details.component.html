@@ -1,4 +1,4 @@
-@if ( user$ | async; as user){
+@if ( user(); as user){
 <section>
   <article>
     <img [src]="user?.image" alt="user image" class="w-12 h-12 rounded-full" />
@@ -23,3 +23,9 @@
   </article>
 </section>
 }
+<button (click)="updateUser()" class="bg-blue-600 rounded-lg p-2">
+  update user
+</button>
+<button (click)="removeUser()" class="bg-blue-600 rounded-lg p-2">
+  remove user
+</button>

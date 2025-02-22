@@ -56,15 +56,4 @@ export class AddUserFormComponent {
     this.store.dispatch(addUser({ user }));
     this.userForm.reset();
   }
-  removeUser() {
-    this.store.dispatch(removeUser({ id: '1' }));
-  }
-  updateUser() {
-    this.store.dispatch(
-      updateUser({
-        id: 'abca6590-574d-4a76-b398-0e98fb001895',
-        updateUser: this.userForm.value,
-      })
-    );
-  }
 }
