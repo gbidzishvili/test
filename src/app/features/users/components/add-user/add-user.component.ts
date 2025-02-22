@@ -71,7 +71,7 @@ export class AddUserComponent {
     this.store.dispatch(
       updateUser({
         id: 'abca6590-574d-4a76-b398-0e98fb001895',
-        user: this.userForm.value,
+        updateUser: this.userForm.value,
       })
     );
   }
