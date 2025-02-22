@@ -10,7 +10,7 @@ import { CustomUploaderComponent } from '../custom-uploader/custom-uploader.comp
 import { CommonModule } from '@angular/common';
 import { AddressFormComponent } from './address-form/address-form.component';
 import { Store } from '@ngrx/store';
-import { addUser } from '../../../../state/users/user.action';
+import { addUser, removeUser } from '../../../../state/users/user.action';
 import { UserService } from '../../services/user.service';
 
 @Component({
@@ -53,5 +53,8 @@ export class AddUserComponent {
     console.log(this.userForm.value);
     this.store.dispatch(addUser({ user: this.userForm.value }));
     this.userForm.reset();
+  }
+  removeUser() {
+    this.store.dispatch(removeUser({ id: '1' }));
   }
 }

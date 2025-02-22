@@ -20,6 +20,10 @@ export const userReducer = createReducer(
   })),
   on(removeUser, (state, { id }) => ({
     ...state,
-    users: state.users.filter((user: User) => user.id !== id),
+    // users: state.users.filter((user: User) => user.id !== id),
   }))
+  // on(removeUser, (state, { id }) => ({
+  //   ...state,
+  //   users: state.users.filter((user: User) => user.id !== id),
+  // }))
 );
