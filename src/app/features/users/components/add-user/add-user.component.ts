@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 import { CustomUploaderComponent } from '../../../../shared/components/custom-uploader/custom-uploader.component';
 import { CommonModule } from '@angular/common';
-import { AddressFormComponent } from './address-form/address-form.component';
+import { AddressFormComponent } from '../../../../shared/components/address-form/address-form.component';
 import { Store } from '@ngrx/store';
 import {
   addUser,
