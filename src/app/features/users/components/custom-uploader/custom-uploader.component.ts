@@ -26,13 +26,12 @@ export class CustomUploaderComponent implements ControlValueAccessor {
   @Input()
   set customUploaderReset(value: boolean) {
     if (value === true) {
-      this.fileUrls.set([]);
       this.filesArr.set([]);
     }
   }
   uploader = viewChild('uploader', { read: ElementRef<any> });
-  fileUrls = signal<string[]>([]);
   filesArr = signal<any>([]);
+  imageUrl = signal<any>('');
   formData: any;
   onChange = (value: any) => {};
   onTouched = () => {};
@@ -48,21 +47,22 @@ export class CustomUploaderComponent implements ControlValueAccessor {
   onClick() {
     this.uploader()!.nativeElement.click();
   }
+  edit() {
+    this.onClick();
+  }
+  delete() {
+    this.imageUrl.set('');
+  }
 
   log(event: Event) {
     const filefileInputElement = event.target as HTMLInputElement;
     if (filefileInputElement.files && filefileInputElement.files[0]) {
-      console.log('files', filefileInputElement.files);
       var reader = new FileReader();
       reader.onloadend = () => {
         var baseStringResult = reader.result as string;
         const imageUrl = baseStringResult;
-        this.fileUrls.set([...this.fileUrls(), imageUrl]);
-        this.filesArr.set([
-          ...this.filesArr(),
-          filefileInputElement?.files?.[0],
-        ]);
-        this.onChange(this.filesArr());
+        this.imageUrl.set(imageUrl);
+        this.onChange(this.imageUrl());
         filefileInputElement.value = '';
       };
       reader.readAsDataURL(filefileInputElement.files[0]);

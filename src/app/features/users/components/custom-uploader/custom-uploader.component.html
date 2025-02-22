@@ -1,12 +1,12 @@
-@if(fileUrls().length == 0){
+@if(!imageUrl()){
 
 <div
   (click)="onClick()"
-  class="flex justify-center items-center h-[127px] w-[200px] border border-dashed cursor-pointer mb-1"
+  class="flex justify-center items-center h-80 w-72 border cursor-pointer mb-1 rounded-lg"
 >
   <div
-    class="flex flex-col justify-center items-center gap-[10px] max-w-[400px] text-[#5A5A5A] font-semibold text-c-normal leading-[21.76px]"
-    style="width: calc(100% - 2px); background: #fff; height: 108px"
+    class="flex flex-col justify-center items-center gap-3 max-w-[400px] text-[#5A5A5A] font-semibold text-c-normal leading-[21.76px] rounded-lg"
+    style="width: 100%; background: #fff; height: 100%"
   >
     <img src="assets/images/account_image.svg" alt="file image" />
     <div>Click to upload</div>
@@ -14,24 +14,36 @@
 </div>
 
 }@else{
-<div class="flex flex-wrap gap-2">
-  @for(file of fileUrls();track file){
-  <img width="200px" height="200px" [src]="file" class="rounded-lg h-[200px]" />
-  }
+<div class="flex flex-wrap gap-2 relative h-80 w-72 border rounded-lg">
+  <img
+    width="200px"
+    height="127px"
+    [src]="imageUrl()"
+    class="rounded-lg w-full"
+  />
+
   <div
-    class="flex justify-center items-center rounded-lg min-h-[127px] w-[127px] bg-light-gray cursor-pointer"
-    (click)="onClick()"
+    class="absolute flex justify-center items-center gap-1 top-0 right-0 my-3 mx-1"
   >
     <div
-      class="flex justify-center items-center bg-white hover:bg-light-gray rounded-full p-2"
+      class="flex justify-center items-center rounded-lg bg-light-gray cursor-pointer"
+      (click)="edit()"
     >
-      <img
-        class=""
-        width="20px"
-        height="20px"
-        src="assets/images/account_image.svg"
-        alt="add_circle"
-      />
+      <div
+        class="flex justify-center items-center bg-white hover:bg-light-gray rounded-full p-2"
+      >
+        <span class="material-symbols-outlined"> edit </span>
+      </div>
+    </div>
+    <div
+      class="flex justify-center items-center rounded-lg bg-light-gray cursor-pointer"
+      (click)="delete()"
+    >
+      <div
+        class="flex justify-center items-center bg-white hover:bg-light-gray rounded-full p-2"
+      >
+        <span class="material-symbols-outlined"> delete </span>
+      </div>
     </div>
   </div>
 </div>
