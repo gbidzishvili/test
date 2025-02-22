@@ -7,7 +7,7 @@ export const addUser = createAction(
 );
 export const updateUser = createAction(
   '[Users Page] Update User',
-  props<{ id: string; user: User }>()
+  props<{ id: string; updateUser: User }>()
 );
 
 export const removeUser = createAction(
