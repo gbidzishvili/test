@@ -1,3 +1,23 @@
 {
-  "users": []
+  "users": [
+    {
+      "id": "2bbf7df3-2253-435b-8f06-ae9211ac2ea0",
+      "firstName": "Giorgi",
+      "lastName": "Bidzishvili",
+      "gender": "",
+      "personalNumber": "",
+      "phone": "+995557295304",
+      "customUploader": [],
+      "legalAddress": {
+        "country": "Georgia",
+        "city": "Tbilisi",
+        "address": "tbilisi meri mdivani St2"
+      },
+      "physicalAddress": {
+        "country": "",
+        "city": "",
+        "address": ""
+      }
+    }
+  ]
 }
