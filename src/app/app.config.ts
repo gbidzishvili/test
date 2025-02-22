@@ -10,6 +10,10 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideStore } from '@ngrx/store';
 import { provideHttpClient } from '@angular/common/http';
+import { provideEffects } from '@ngrx/effects';
+import { UserEffects } from './state/users/user.effects';
+import { userReducer } from './state/users/user.reducer';
+// import {provideStoreDevtools} from '@ngrx/store-devtools'
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -18,7 +22,8 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
     provideClientHydration(),
     provideAnimationsAsync(),
-    provideStore(),
+    provideStore({ user: userReducer }),
+    provideEffects([UserEffects]),
     provideHttpClient(),
   ],
 };

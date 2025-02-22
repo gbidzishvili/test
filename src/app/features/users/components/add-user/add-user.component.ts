@@ -50,12 +50,8 @@ export class AddUserComponent {
   }
 
   onSubmit() {
-    // if (this.userForm.valid) {
     console.log(this.userForm.value);
     this.store.dispatch(addUser({ user: this.userForm.value }));
-    console.log(this.userForm.value);
-    this.userService.addUser(this.userForm.value).subscribe();
     this.userForm.reset();
-    // }
   }
 }
