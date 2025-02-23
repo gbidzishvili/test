@@ -4,9 +4,11 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "serve:all": "concurrently \"ng serve\" \"npx json-server db.json\"",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    
     "serve:ssr:ng-space-project": "node dist/ng-space-project/server/server.mjs"
   },
   "private": true,
@@ -26,6 +28,7 @@
     "@ngrx/effects": "^19.0.1",
     "@ngrx/store": "^19.0.1",
     "@tailwindcss/postcss": "^4.0.7",
+    "concurrently": "^9.1.2",
     "express": "^4.18.2",
     "flag-icons": "^7.3.2",
     "json-server": "^1.0.0-beta.3",
