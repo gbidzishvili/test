@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { User } from '../models/user.model';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -11,6 +11,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 export class UsersService {
   private baseUrl = environment.apiUrl;
   private apiUrl = `${this.baseUrl}/users`;
+  allUsers: any = signal([]);
   // private users$: Observable<User[]> = this.loadAllUsers();
   // public users = toSignal(this.users$, { initialValue: [] });
   constructor(private http: HttpClient) {}

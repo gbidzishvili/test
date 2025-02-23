@@ -1,4 +1,4 @@
-@if ( user(); as user){
+@if ( user.value(); as user){
 <section>
   <article>
     <img [src]="user?.image" alt="user image" class="w-12 h-12 rounded-full" />
@@ -29,3 +29,4 @@
 <button (click)="removeUser()" class="bg-blue-600 rounded-lg p-2">
   remove user
 </button>
+<!-- <div>{{ user.value() | json }}</div> -->
