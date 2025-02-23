@@ -26,11 +26,10 @@ export class CustomUploaderComponent implements ControlValueAccessor {
   @Input()
   set customUploaderReset(value: boolean) {
     if (value === true) {
-      this.filesArr.set([]);
+      this.imageUrl.set('');
     }
   }
   uploader = viewChild('uploader', { read: ElementRef<any> });
-  filesArr = signal<any>([]);
   imageUrl = signal<any>('');
   formData: any;
   onChange = (value: any) => {};

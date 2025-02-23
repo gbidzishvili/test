@@ -25,7 +25,7 @@ import { v4 as uuidv4 } from 'uuid';
 export class AddUserFormComponent {
   usersService = inject(UsersService);
   userForm!: FormGroup;
-  customUploaderReset = signal<any>(false);
+  customUploaderReset = signal<boolean>(false);
   fb = inject(FormBuilder);
   store = inject(Store);
   ngOnInit(): void {
@@ -54,6 +54,10 @@ export class AddUserFormComponent {
       ...this.userForm.value, // Spread the form values
     };
     this.store.dispatch(addUser({ user }));
+    this.resetForm();
+  }
+  resetForm() {
     this.userForm.reset();
+    this.customUploaderReset.set(true);
   }
 }
