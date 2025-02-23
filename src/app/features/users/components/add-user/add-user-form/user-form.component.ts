@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, Input, signal, SimpleChange } from '@angular/core';
 import { CustomUploaderComponent } from '../../../../../shared/components/custom-uploader/custom-uploader.component';
 import { AddressFormComponent } from '../../../../../shared/components/address-form/address-form.component';
 import {
@@ -15,22 +15,25 @@ import {
 } from '../../../../../state/users/user.action';
 import { UsersService } from '../../../services/users.service';
 import { v4 as uuidv4 } from 'uuid';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-add-user-form',
+  selector: 'app-user-form',
   standalone: true,
   imports: [ReactiveFormsModule, CustomUploaderComponent, AddressFormComponent],
-  templateUrl: './add-user-form.component.html',
+  templateUrl: './user-form.component.html',
 })
-export class AddUserFormComponent {
+export class UserFormComponent {
   usersService = inject(UsersService);
   userForm!: FormGroup;
   customUploaderReset = signal<boolean>(false);
   fb = inject(FormBuilder);
   store = inject(Store);
+  activatedRouter = inject(ActivatedRoute);
   ngOnInit(): void {
     this.initForm();
   }
+
   initForm() {
     this.userForm = this.fb.group({
       firstName: ['', [Validators.required]],
@@ -50,8 +53,8 @@ export class AddUserFormComponent {
   onSubmit() {
     const userId = uuidv4();
     const user = {
-      id: userId, // Add the generated id
-      ...this.userForm.value, // Spread the form values
+      id: userId,
+      ...this.userForm.value,
     };
     this.store.dispatch(addUser({ user }));
     this.resetForm();

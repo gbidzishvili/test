@@ -10,6 +10,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'edit/:id',
+    loadComponent: () =>
+      import('./features/users/components/add-user/add-user.component').then(
+        (c) => c.AddUserComponent
+      ),
+  },
+  {
     path: 'users-list',
     loadComponent: () =>
       import(

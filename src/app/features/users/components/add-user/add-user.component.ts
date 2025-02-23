@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { AddUserFormComponent } from './add-user-form/add-user-form.component';
+import { UserFormComponent } from './add-user-form/user-form.component';
 
 @Component({
   selector: 'app-add-user',
   standalone: true,
-  imports: [AddUserFormComponent],
+  imports: [UserFormComponent],
   templateUrl: './add-user.component.html',
 })
 export class AddUserComponent {}

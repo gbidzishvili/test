@@ -39,7 +39,7 @@ export class UserEffects {
     () =>
       this.actions$.pipe(
         ofType(updateUser),
-        switchMap(({ id, updateUser }) =>
+        switchMap(({ id, updatedUser: updateUser }) =>
           this.usersService.updateUser(id, updateUser).pipe(
             catchError((error) => {
               console.error('Error removing user:', error);

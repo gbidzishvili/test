@@ -22,7 +22,7 @@ export const userReducer = createReducer(
     ...state,
     users: state.users.filter((user: User) => user.id !== id),
   })),
-  on(updateUser, (state, { id, updateUser }) => ({
+  on(updateUser, (state, { id, updatedUser: updateUser }) => ({
     ...state,
     users: state.users.map((existingUser) =>
       existingUser.id === id ? updateUser : existingUser

@@ -22,7 +22,11 @@ export class UsersService {
   updateUser(id: string, user: User): Observable<User> {
     return this.http.put<User>(`${this.apiUrl}/${id}`, user);
   }
-  loadAllUsers(): Observable<User[]> {
+  loadAllUsers(param?): Observable<User[]> {
+    if (param) {
+      console.log('param esist');
+      return this.http.get<User[]>(`${this.apiUrl}?firstName_like=^${param}`);
+    }
     return this.http.get<User[]>(this.apiUrl);
   }
   removeUser(id: string): Observable<string> {

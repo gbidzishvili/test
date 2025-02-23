@@ -2,7 +2,7 @@ export interface User {
   id: string;
   firstName: string;
   lastName: string;
-  gender: boolean;
+  gender: string;
   personalNumber: number;
   mobileNumber: number;
   legalAddress: {
