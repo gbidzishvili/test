@@ -10,6 +10,9 @@ import {
   loadUsersFailure,
   loadUsersSuccess,
   removeUser,
+  sortUsers,
+  sortUsersFailure,
+  sortUsersSuccess,
   updateUser,
 } from './user.action';
 import { selectUsers } from './user.selectors';
@@ -58,6 +61,11 @@ export const userReducer = createReducer(
   }),
   on(loadUsersFailure, (state, { error }) => ({ ...state, error: error })),
 
+  on(loadUsersBypage, (state, { pageSize }) => ({
+    ...state,
+    pageSize: pageSize,
+  })),
+
   // filterUsers reducers
   on(filterUsers, (state) => ({
     ...state,
@@ -75,8 +83,22 @@ export const userReducer = createReducer(
     error: error,
     status: StatusEnum.Error,
   })),
-  on(loadUsersBypage, (state, { pageSize }) => ({
+
+  // sortUsers reducers
+  on(sortUsers, (state) => ({
     ...state,
-    pageSize: pageSize,
+    status: StatusEnum.Loading,
+  })),
+
+  on(sortUsersSuccess, (state, { sortedUsers }) => ({
+    ...state,
+    users: sortedUsers,
+    status: StatusEnum.Success,
+  })),
+
+  on(sortUsersFailure, (state, { error }) => ({
+    ...state,
+    error: error,
+    status: StatusEnum.Error,
   }))
 );

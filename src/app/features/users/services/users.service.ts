@@ -42,6 +42,11 @@ export class UsersService {
       `${this.apiUrl}?firstName_like=^${value}&_limit=${this.pageSize()}`
     );
   }
+  sortUsers(label: string) {
+    return this.http.get<User[]>(`${this.apiUrl}`, {
+      params: { _sort: label },
+    });
+  }
   removeUser(id: string): Observable<string> {
     return this.http.delete<string>(`${this.apiUrl}/${id}`);
   }

@@ -6,12 +6,12 @@ export const addUser = createAction(
   props<{ user: User }>()
 );
 export const updateUser = createAction(
-  '[Users Page] Update User',
+  '[Update User Page] Update User',
   props<{ id: string; updatedUser: User }>()
 );
 
 export const removeUser = createAction(
-  '[User Details Page] Remove User',
+  '[User Details Page || Users List Page] Remove User',
   props<{ id: string }>()
 );
 
@@ -30,20 +30,32 @@ export const loadUsersFailure = createAction(
   '[Users API] User Load Failure',
   props<{ error: string }>()
 );
-
+// sort
+export const sortUsers = createAction(
+  '[Users List Page] Sort users',
+  props<{ sortLabel: string }>()
+);
+export const sortUsersSuccess = createAction(
+  '[Users List Page] Sort Users Success',
+  props<{ sortedUsers: User[] }>()
+);
+export const sortUsersFailure = createAction(
+  '[Users] Sort Users Failure',
+  props<{ error: string }>()
+);
 // pagination
 export const updateUsersTotalCount = createAction(
-  '[Users Service] Update Users Total Count',
+  '[Users List Page] Update Users Total Count',
   props<{ totalCount: number }>()
 );
 // Filter Actions
 export const filterUsers = createAction(
-  '[Users] Filter Users',
+  '[Users List Page] Filter Users',
   props<{ filterByValue: string }>()
 );
 
 export const filterUsersSuccess = createAction(
-  '[Users] Filter Users Success',
+  '[Users List Page] Filter Users Success',
   props<{ filteredUsers: User[] }>()
 );
 

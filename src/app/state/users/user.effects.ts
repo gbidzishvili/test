@@ -15,6 +15,9 @@ import {
   filterUsers,
   filterUsersSuccess,
   filterUsersFailure,
+  sortUsers,
+  sortUsersSuccess,
+  sortUsersFailure,
 } from './user.action';
 import { catchError, from, map, mergeMap, of, switchMap, tap } from 'rxjs';
 import { User } from '../../features/users/models/user.model';
@@ -102,6 +105,19 @@ export class UserEffects {
           catchError((error) =>
             of(filterUsersFailure({ error: error.message }))
           )
+        )
+      )
+    )
+  );
+  sortUsers$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(sortUsers),
+      switchMap(({ sortLabel }) =>
+        this.usersService.sortUsers(sortLabel).pipe(
+          map((sortedUsers: User[]) =>
+            sortUsersSuccess({ sortedUsers: sortedUsers })
+          ),
+          catchError((error) => of(sortUsersFailure({ error: error.message })))
         )
       )
     )

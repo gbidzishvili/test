@@ -14,6 +14,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { TooltipDirective } from '../../../../shared/directives/tooltip.directive';
 import { ClickOutsideDirective } from '../../../../shared/directives/click-outside.directive';
 import { PaginationComponent } from './pagination/pagination.component';
+import { SortComponent } from './sort/sort.component';
 
 @Component({
   selector: 'app-users-list',
@@ -22,8 +23,8 @@ import { PaginationComponent } from './pagination/pagination.component';
     CommonModule,
     MatPaginatorModule,
     TooltipDirective,
-    ClickOutsideDirective,
     PaginationComponent,
+    SortComponent,
   ],
   templateUrl: './users-list.component.html',
   providers: [{ provide: MatPaginatorIntl, useClass: PaginatorIntlService }],
@@ -32,18 +33,7 @@ export class UsersListComponent {
   store = inject(Store);
   usersService = inject(UsersService);
   public router = inject(Router);
-  isSortMenuOpen = signal(false);
-
   users = toSignal(this.store.select(selectAllUsers));
-
-  // getUsers() {
-  //   return toObservable(this.filterValue).pipe(
-  //     debounceTime(500),
-  //     distinctUntilChanged(),
-  //     switchMap((query) => this.usersService.loadAllUsers(query))
-  //   );
-  // }
-
   updatefilterValue(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.store.dispatch(filterUsers({ filterByValue: filterValue }));
@@ -52,8 +42,11 @@ export class UsersListComponent {
   goToDetails(id: string) {
     this.router.navigate([`/user/${id}`]);
   }
-  closeSortMenu() {
-    console.log('&&&&&');
-    this.isSortMenuOpen.set(false);
-  }
 }
+// getUsers() {
+//   return toObservable(this.filterValue).pipe(
+//     debounceTime(500),
+//     distinctUntilChanged(),
+//     switchMap((query) => this.usersService.loadAllUsers(query))
+//   );
+// }
