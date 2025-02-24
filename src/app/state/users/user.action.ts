@@ -36,11 +36,6 @@ export const updateUsersTotalCount = createAction(
   '[Users Service] Update Users Total Count',
   props<{ totalCount: number }>()
 );
-export const updatePageSize = createAction(
-  '[Users List page] Update Users List PageSize',
-  props<{ pageSize: number }>()
-);
-
 // Filter Actions
 export const filterUsers = createAction(
   '[Users] Filter Users',

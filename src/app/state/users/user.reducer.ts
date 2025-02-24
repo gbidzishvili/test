@@ -6,10 +6,10 @@ import {
   filterUsersFailure,
   filterUsersSuccess,
   loadUsers,
+  loadUsersBypage,
   loadUsersFailure,
   loadUsersSuccess,
   removeUser,
-  updatePageSize,
   updateUser,
 } from './user.action';
 import { selectUsers } from './user.selectors';
@@ -75,7 +75,7 @@ export const userReducer = createReducer(
     error: error,
     status: StatusEnum.Error,
   })),
-  on(updatePageSize, (state, { pageSize }) => ({
+  on(loadUsersBypage, (state, { pageSize }) => ({
     ...state,
     pageSize: pageSize,
   }))

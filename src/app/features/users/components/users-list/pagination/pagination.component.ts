@@ -1,5 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
-import { UsersService } from '../../../services/users.service';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   MatPaginatorIntl,
@@ -7,9 +6,10 @@ import {
   PageEvent,
 } from '@angular/material/paginator';
 import { PaginatorIntlService } from './paginator-intl.service';
-import { HttpClient } from '@angular/common/http';
-import { User } from '../../../models/user.model';
-import { map, Observable, tap } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { Store } from '@ngrx/store';
+import { selectUsersCount } from '../../../../../state/users/user.selectors';
+import { loadUsersBypage } from '../../../../../state/users/user.action';
 
 @Component({
   selector: 'app-pagination',
@@ -18,43 +18,26 @@ import { map, Observable, tap } from 'rxjs';
   templateUrl: './pagination.component.html',
   providers: [{ provide: MatPaginatorIntl, useClass: PaginatorIntlService }],
 })
-export class PaginationComponent {
-  http = inject(HttpClient);
-  usersService = inject(UsersService);
+export class PaginationComponent implements OnInit {
+  store = inject(Store);
   currentPage = signal(0);
   pageSize = signal(1);
-  length = signal(0);
-  public users = this.loadUsers();
+  userslength = toSignal(this.store.select(selectUsersCount));
 
+  ngOnInit(): void {
+    this.dispatchLoadUsersByPage();
+  }
   handlePage(pageEvent: PageEvent) {
     this.currentPage.set(pageEvent.pageIndex);
     this.pageSize.set(pageEvent.pageSize);
-    this.users = this.loadUsers();
+    this.dispatchLoadUsersByPage();
   }
-
-  private loadUsers(): Observable<any[]> {
-    const page = this.currentPage();
-    const size = this.pageSize();
-
-    return this.http
-      .get(`http://localhost:3000/users`, {
-        params: {
-          _page: `${page + 1}`,
-          _limit: `${size}`,
-        },
-        observe: 'response',
-        transferCache: {
-          includeHeaders: ['X-Total-Count'],
-        },
+  dispatchLoadUsersByPage() {
+    this.store.dispatch(
+      loadUsersBypage({
+        currentPage: this.currentPage(),
+        pageSize: this.pageSize(),
       })
-      .pipe(
-        tap((response) => {
-          const totalCount = response.headers.get('X-Total-Count');
-          if (totalCount !== null) {
-            this.length.set(+totalCount);
-          }
-        }),
-        map((response) => (Array.isArray(response.body) ? response.body : []))
-      );
+    );
   }
 }

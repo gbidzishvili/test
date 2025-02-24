@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { User } from '../models/user.model';
 import { HttpClient } from '@angular/common/http';
-import { Observable, switchMap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { selectPageSize } from '../../../state/users/user.selectors';
@@ -14,6 +14,7 @@ export class UsersService {
   private baseUrl = environment.apiUrl;
   private apiUrl = `${this.baseUrl}/users`;
   private store = inject(Store);
+  private pageSize = toSignal(this.store.select(selectPageSize));
   constructor(private http: HttpClient) {}
   addUser(user: User): Observable<User> {
     return this.http.post<User>(this.apiUrl, user);
@@ -37,16 +38,9 @@ export class UsersService {
     });
   }
   filterUsers(value: string) {
-    console.log('param esist');
-    return this.store
-      .select(selectPageSize)
-      .pipe(
-        switchMap((pageSize) =>
-          this.http.get<User[]>(
-            `${this.apiUrl}?firstName_like=^${value}&_limit=${pageSize}`
-          )
-        )
-      );
+    return this.http.get<User[]>(
+      `${this.apiUrl}?firstName_like=^${value}&_limit=${this.pageSize()}`
+    );
   }
   removeUser(id: string): Observable<string> {
     return this.http.delete<string>(`${this.apiUrl}/${id}`);
