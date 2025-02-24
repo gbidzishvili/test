@@ -22,11 +22,13 @@ import { Store } from '@ngrx/store';
 import { selectAllUsers } from '../../../../state/users/user.selectors';
 import { loadUsers } from '../../../../state/users/user.action';
 import { StatusEnum } from '../../../../state/enums/status.enums';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { TooltipDirective } from '../../../../shared/directives/tooltip.directive';
 
 @Component({
   selector: 'app-users-list',
   standalone: true,
-  imports: [CommonModule, MatPaginatorModule],
+  imports: [CommonModule, MatPaginatorModule, TooltipDirective],
   templateUrl: './users-list.component.html',
   providers: [{ provide: MatPaginatorIntl, useClass: PaginatorIntlService }],
 })
@@ -41,16 +43,13 @@ export class UsersListComponent {
   currentPage = signal(0);
   pageSize = signal(1);
   length = signal(0);
-  users = this.store.select(selectAllUsers);
+  users = toSignal(this.store.select(selectAllUsers));
 
   ngOnInit() {
     this.store.dispatch(loadUsers());
     // this.store
     //   .select(selectAllUsers)
     //   .subscribe((v) => console.log('v**********8:', v));
-  }
-  toggleSortMenu() {
-    this.isSortMenuOpen.set(!this.isSortMenuOpen());
   }
   goToDetails(id: string) {
     this.router.navigate([`/user/${id}`]);

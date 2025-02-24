@@ -30,7 +30,6 @@
           />
         </svg>
       </button>
-      <!-- Dropdown menu -->
       <div
         class="absolute top-10 left-0 z-10 bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600"
         [ngClass]="{ hidden: !isSortMenuOpen(), block: isSortMenuOpen() }"
@@ -110,10 +109,13 @@
       </tr>
     </thead>
     <tbody>
-      @for(user of users | async;track user.id){
+      @for(user of users();track user.id){
 
       <tr
-        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600"
+        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer"
+        (click)="goToDetails(user.id)"
+        tooltip
+        [tooltipText]="'view user details'"
       >
         <th
           scope="row"
