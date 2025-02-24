@@ -30,4 +30,11 @@ export const routes: Routes = [
         './features/users/components/user-details/user-details.component'
       ).then((c) => c.UserDetailsComponent),
   },
+  {
+    path: 'pagination',
+    loadComponent: () =>
+      import(
+        './features/users/components/users-list/pagination/pagination.component'
+      ).then((c) => c.PaginationComponent),
+  },
 ];
