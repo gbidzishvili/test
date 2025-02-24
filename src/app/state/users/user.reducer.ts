@@ -2,10 +2,14 @@ import { createReducer, on } from '@ngrx/store';
 import { User } from '../../features/users/models/user.model';
 import {
   addUser,
+  filterUsers,
+  filterUsersFailure,
+  filterUsersSuccess,
   loadUsers,
   loadUsersFailure,
   loadUsersSuccess,
   removeUser,
+  updatePageSize,
   updateUser,
 } from './user.action';
 import { selectUsers } from './user.selectors';
@@ -13,11 +17,15 @@ import { StatusEnum } from '../enums/status.enums';
 
 export interface UserState {
   users: User[];
+  totalCount: number;
+  pageSize: number;
   error: string | null;
   status: StatusEnum;
 }
 export const initialState: UserState = {
   users: [],
+  totalCount: 0,
+  pageSize: 0,
   error: null,
   status: StatusEnum.Pending,
 };
@@ -38,9 +46,37 @@ export const userReducer = createReducer(
     ),
   })),
   on(loadUsers, (state) => ({ ...state, status: StatusEnum.Loading })),
-  on(loadUsersSuccess, (state, { users }) => {
-    console.log('Updating users in state', users); // Log users here
-    return { ...state, users: users, error: null, status: StatusEnum.Success };
+  // on(updateTotalCount)
+  on(loadUsersSuccess, (state, { users, count = 0 }) => {
+    return {
+      ...state,
+      users: users,
+      totalCount: count,
+      error: null,
+      status: StatusEnum.Success,
+    };
   }),
-  on(loadUsersFailure, (state, { error }) => ({ ...state, error: error }))
+  on(loadUsersFailure, (state, { error }) => ({ ...state, error: error })),
+
+  // filterUsers reducers
+  on(filterUsers, (state) => ({
+    ...state,
+    status: StatusEnum.Loading,
+  })),
+
+  on(filterUsersSuccess, (state, { filteredUsers }) => ({
+    ...state,
+    users: filteredUsers,
+    status: StatusEnum.Success,
+  })),
+
+  on(filterUsersFailure, (state, { error }) => ({
+    ...state,
+    error: error,
+    status: StatusEnum.Error,
+  })),
+  on(updatePageSize, (state, { pageSize }) => ({
+    ...state,
+    pageSize: pageSize,
+  }))
 );

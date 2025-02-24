@@ -19,9 +19,16 @@ import {
 } from '@angular/material/paginator';
 import { PaginatorIntlService } from './pagination/paginator-intl.service';
 import { Store } from '@ngrx/store';
-import { selectAllUsers } from '../../../../state/users/user.selectors';
-import { loadUsers } from '../../../../state/users/user.action';
-import { StatusEnum } from '../../../../state/enums/status.enums';
+import {
+  selectAllUsers,
+  selectUsersCount,
+} from '../../../../state/users/user.selectors';
+import {
+  filterUsers,
+  loadUsers,
+  loadUsersBypage,
+  updatePageSize,
+} from '../../../../state/users/user.action';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { TooltipDirective } from '../../../../shared/directives/tooltip.directive';
 
@@ -34,26 +41,23 @@ import { TooltipDirective } from '../../../../shared/directives/tooltip.directiv
 })
 export class UsersListComponent {
   store = inject(Store);
-  http = inject(HttpClient);
   usersService = inject(UsersService);
   public router = inject(Router);
-  filterValue = signal('');
-
   isSortMenuOpen = signal(false);
   currentPage = signal(0);
   pageSize = signal(1);
-  length = signal(0);
+  userslength = toSignal(this.store.select(selectUsersCount));
   users = toSignal(this.store.select(selectAllUsers));
 
   ngOnInit() {
-    this.store.dispatch(loadUsers());
-    // this.store
-    //   .select(selectAllUsers)
-    //   .subscribe((v) => console.log('v**********8:', v));
+    this.store.dispatch(
+      loadUsersBypage({
+        currentPage: this.currentPage(),
+        pageSize: this.pageSize(),
+      })
+    );
   }
-  goToDetails(id: string) {
-    this.router.navigate([`/user/${id}`]);
-  }
+
   // getUsers() {
   //   return toObservable(this.filterValue).pipe(
   //     debounceTime(500),
@@ -61,38 +65,28 @@ export class UsersListComponent {
   //     switchMap((query) => this.usersService.loadAllUsers(query))
   //   );
   // }
-  // updatefilterValue(event: Event) {
-  //   this.filterValue.set((event.target as HTMLInputElement).value);
-  //   this.usersService.loadAllUsers(this.filterValue());
-  // }
-  handlePage(pageEvent: PageEvent) {
-    // this.currentPage.set(pageEvent.pageIndex);
-    // this.pageSize.set(pageEvent.pageSize);
-    // this.users = this.loadUsers();
-  }
-  // private loadUsers(): Observable<any[]> {
-  //   const page = this.currentPage();
-  //   const size = this.pageSize();
+  updatefilterValue(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
 
-  //   return this.http
-  //     .get(`http://localhost:3000/users`, {
-  //       params: {
-  //         _page: `${page + 1}`,
-  //         _limit: `${size}`,
-  //       },
-  //       observe: 'response',
-  //       transferCache: {
-  //         includeHeaders: ['X-Total-Count'],
-  //       },
-  //     })
-  //     .pipe(
-  //       tap((response) => {
-  //         const totalCount = response.headers.get('X-Total-Count');
-  //         if (totalCount !== null) {
-  //           this.length.set(+totalCount);
-  //         }
-  //       }),
-  //       map((response) => (Array.isArray(response.body) ? response.body : []))
-  //     );
-  // }
+    this.store.dispatch(filterUsers({ filterByValue: filterValue }));
+    this.store.dispatch(
+      updatePageSize({
+        pageSize: this.pageSize(),
+      })
+    );
+  }
+  handlePage(pageEvent: PageEvent) {
+    this.currentPage.set(pageEvent.pageIndex);
+    this.pageSize.set(pageEvent.pageSize);
+    this.store.dispatch(
+      loadUsersBypage({
+        currentPage: this.currentPage(),
+        pageSize: this.pageSize(),
+      })
+    );
+  }
+
+  goToDetails(id: string) {
+    this.router.navigate([`/user/${id}`]);
+  }
 }

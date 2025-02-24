@@ -6,12 +6,17 @@ import { UsersService } from '../../features/users/services/users.service';
 import {
   addUser,
   loadUsers,
+  loadUsersBypage,
   loadUsersFailure,
   loadUsersSuccess,
   removeUser,
+  updateUsersTotalCount,
   updateUser,
+  filterUsers,
+  filterUsersSuccess,
+  filterUsersFailure,
 } from './user.action';
-import { catchError, from, map, of, switchMap, tap } from 'rxjs';
+import { catchError, from, map, mergeMap, of, switchMap, tap } from 'rxjs';
 import { User } from '../../features/users/models/user.model';
 
 @Injectable()
@@ -23,7 +28,6 @@ export class UserEffects {
     () =>
       this.actions$.pipe(
         ofType(addUser),
-        tap(() => console.log('tap shimainc rame')),
         switchMap(({ user }) => this.usersService.addUser(user))
       ),
     { dispatch: false }
@@ -58,18 +62,48 @@ export class UserEffects {
       ),
     { dispatch: false } // Do not dispatch any action after removal
   );
-  loadUsers$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(loadUsers),
-        switchMap(() =>
-          this.usersService.loadAllUsers().pipe(
-            tap((v) => console.log('loadUsers', v)),
-            map((users: User[]) => loadUsersSuccess({ users })),
-            catchError((error) => of(loadUsersFailure({ error })))
+  loadUsers$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadUsers),
+      switchMap(() =>
+        this.usersService.loadAllUsers().pipe(
+          tap((v) => console.log('loadUsers', v)),
+          map((users: User[]) => loadUsersSuccess({ users })),
+          catchError((error) => of(loadUsersFailure({ error })))
+        )
+      )
+    )
+  );
+  loadUsersByPage$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadUsersBypage),
+      mergeMap(({ currentPage, pageSize }) =>
+        this.usersService.loadUsersByPage(currentPage, pageSize).pipe(
+          map((response: any) => {
+            const totalCount = response.headers.get('X-Total-Count');
+            return loadUsersSuccess({
+              users: response.body,
+              count: totalCount,
+            });
+          }),
+          catchError((error) => of(loadUsersFailure({ error: error.message })))
+        )
+      )
+    )
+  );
+  filterUsers$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(filterUsers),
+      switchMap(({ filterByValue }) =>
+        this.usersService.filterUsers(filterByValue).pipe(
+          map((filteredUsers: User[]) =>
+            filterUsersSuccess({ filteredUsers: filteredUsers })
+          ),
+          catchError((error) =>
+            of(filterUsersFailure({ error: error.message }))
           )
         )
       )
-    // { dispatch: false }
+    )
   );
 }

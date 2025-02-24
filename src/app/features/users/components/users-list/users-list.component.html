@@ -88,6 +88,7 @@
         </svg>
       </div>
       <input
+        (input)="updatefilterValue($event)"
         type="text"
         id="table-search-users"
         class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -154,10 +155,10 @@
     </tbody>
   </table>
   <mat-paginator
-    [length]="6"
-    [pageSize]="2"
+    [length]="userslength()"
+    [pageSize]="pageSize()"
     [pageSizeOptions]="[3, 5, 10, 25, 100]"
-    [pageIndex]="1"
+    [pageIndex]="currentPage()"
     (page)="handlePage($event)"
     aria-label="Select page"
     [showFirstLastButtons]="true"
