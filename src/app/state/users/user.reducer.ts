@@ -1,16 +1,25 @@
 import { createReducer, on } from '@ngrx/store';
 import { User } from '../../features/users/models/user.model';
-import { addUser, removeUser, updateUser } from './user.action';
+import {
+  addUser,
+  loadUsers,
+  loadUsersFailure,
+  loadUsersSuccess,
+  removeUser,
+  updateUser,
+} from './user.action';
+import { selectUsers } from './user.selectors';
+import { StatusEnum } from '../enums/status.enums';
 
 export interface UserState {
   users: User[];
   error: string | null;
-  status: 'pending' | 'loading' | 'error' | 'success';
+  status: StatusEnum;
 }
 export const initialState: UserState = {
   users: [],
   error: null,
-  status: 'pending',
+  status: StatusEnum.Pending,
 };
 export const userReducer = createReducer(
   initialState,
@@ -27,5 +36,11 @@ export const userReducer = createReducer(
     users: state.users.map((existingUser) =>
       existingUser.id === id ? updateUser : existingUser
     ),
-  }))
+  })),
+  on(loadUsers, (state) => ({ ...state, status: StatusEnum.Loading })),
+  on(loadUsersSuccess, (state, { users }) => {
+    console.log('Updating users in state', users); // Log users here
+    return { ...state, users: users, error: null, status: StatusEnum.Success };
+  }),
+  on(loadUsersFailure, (state, { error }) => ({ ...state, error: error }))
 );

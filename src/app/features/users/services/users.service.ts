@@ -11,11 +11,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 export class UsersService {
   private baseUrl = environment.apiUrl;
   private apiUrl = `${this.baseUrl}/users`;
-  allUsers: any = signal([]);
-  // private users$: Observable<User[]> = this.loadAllUsers();
-  // public users = toSignal(this.users$, { initialValue: [] });
   constructor(private http: HttpClient) {}
-
   addUser(user: User): Observable<User> {
     return this.http.post<User>(this.apiUrl, user);
   }

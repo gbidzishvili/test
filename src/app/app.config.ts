@@ -1,4 +1,8 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import {
+  ApplicationConfig,
+  isDevMode,
+  provideZoneChangeDetection,
+} from '@angular/core';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -13,7 +17,7 @@ import { provideHttpClient, withFetch } from '@angular/common/http';
 import { provideEffects } from '@ngrx/effects';
 import { UserEffects } from './state/users/user.effects';
 import { userReducer } from './state/users/user.reducer';
-// import {provideStoreDevtools} from '@ngrx/store-devtools'
+import { provideStoreDevtools } from '@ngrx/store-devtools';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -23,6 +27,7 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(),
     provideAnimationsAsync(),
     provideStore({ user: userReducer }),
+    provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
     provideEffects([UserEffects]),
     provideHttpClient(withFetch()),
   ],

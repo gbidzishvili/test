@@ -15,7 +15,7 @@ export const removeUser = createAction(
   props<{ id: string }>()
 );
 
-export const loadUsers = createAction('[User Dashboard] Load Todos');
+export const loadUsers = createAction('[User Dashboard] Load Users');
 
 export const loadUsersSuccess = createAction(
   '[Users API] User Load Success',

@@ -1,16 +1,16 @@
-<!-- <input type="text"  /> -->
-
-<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+<div
+  class="relative overflow-x-auto shadow-md sm:rounded-lg w-8/10 my-[100px] mx-auto"
+>
   <div
-    class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-white dark:bg-gray-900"
+    class="flex items-center justify-between flex-column flex-wrap p-4 pt-5 md:flex-row space-y-4 md:space-y-0 pb-4 bg-white dark:bg-gray-900"
   >
-    <div>
+    <div class="relative">
       <button
-        (click)="isSortMenuOpen.set(!isSortMenuOpen())"
         id="dropdownActionButton"
         data-dropdown-toggle="dropdownAction"
         class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
         type="button"
+        (click)="this.isSortMenuOpen.set(!this.isSortMenuOpen())"
       >
         <span class="sr-only">Action button</span>
         Action
@@ -32,14 +32,10 @@
       </button>
       <!-- Dropdown menu -->
       <div
-        id="dropdownAction"
-        class="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600"
-        [ngClass]="{ hidden: isSortMenuOpen(), visible: !isSortMenuOpen() }"
+        class="absolute top-10 left-0 z-10 bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600"
+        [ngClass]="{ hidden: !isSortMenuOpen(), block: isSortMenuOpen() }"
       >
-        <ul
-          class="py-1 text-sm text-gray-700 dark:text-gray-200"
-          aria-labelledby="dropdownActionButton"
-        >
+        <ul class="py-1 text-sm text-gray-700 dark:text-gray-200">
           <li>
             <a
               href="#"
@@ -107,101 +103,41 @@
       class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
     >
       <tr>
-        <th scope="col" class="p-4">
-          <div class="flex items-center">
-            <input
-              id="checkbox-all-search"
-              type="checkbox"
-              class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-            />
-            <label for="checkbox-all-search" class="sr-only">checkbox</label>
-          </div>
-        </th>
         <th scope="col" class="px-6 py-3">Name</th>
-        <th scope="col" class="px-6 py-3">Position</th>
-        <th scope="col" class="px-6 py-3">Status</th>
+        <th scope="col" class="px-6 py-3">PN</th>
+        <th scope="col" class="px-6 py-3">mobile Number</th>
         <th scope="col" class="px-6 py-3">Action</th>
       </tr>
     </thead>
     <tbody>
+      @for(user of users | async;track user.id){
+
       <tr
         class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600"
       >
-        <td class="w-4 p-4">
-          <div class="flex items-center">
-            <input
-              id="checkbox-table-search-1"
-              type="checkbox"
-              class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-            />
-            <label for="checkbox-table-search-1" class="sr-only"
-              >checkbox</label
-            >
-          </div>
-        </td>
-        <th
-          scope="row"
-          class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white"
-        >
-          <img
-            class="w-10 h-10 rounded-full"
-            src="/docs/images/people/profile-picture-1.jpg"
-            alt="Jese image"
-          />
-          <div class="ps-3">
-            <div class="text-base font-semibold">Neil Sims</div>
-            <div class="font-normal text-gray-500">neil.simsflowbite.com</div>
-          </div>
-        </th>
-        <td class="px-6 py-4">React Developer</td>
-        <td class="px-6 py-4">
-          <div class="flex items-center">
-            <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>
-            Online
-          </div>
-        </td>
-        <td class="px-6 py-4">
-          <a
-            href="#"
-            class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-            >Edit user</a
-          >
-        </td>
-      </tr>
-      <tr
-        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600"
-      >
-        <td class="w-4 p-4">
-          <div class="flex items-center">
-            <input
-              id="checkbox-table-search-2"
-              type="checkbox"
-              class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-            />
-            <label for="checkbox-table-search-2" class="sr-only"
-              >checkbox</label
-            >
-          </div>
-        </td>
         <th
           scope="row"
           class="flex items-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
         >
           <img
             class="w-10 h-10 rounded-full"
-            src="/docs/images/people/profile-picture-3.jpg"
+            [src]="user.image"
             alt="Jese image"
           />
           <div class="ps-3">
-            <div class="text-base font-semibold">Bonnie Green</div>
-            <div class="font-normal text-gray-500">bonnieflowbite.com</div>
+            <div class="text-base font-semibold">{{ user.firstName }}</div>
+            <div class="font-normal text-gray-500">
+              {{ user.physicalAddress.country }},
+              {{ user.physicalAddress.city }}
+            </div>
           </div>
         </th>
-        <td class="px-6 py-4">Designer</td>
+        <td class="px-6 py-4">
+          {{ user.mobileNumber }}
+        </td>
         <td class="px-6 py-4">
           <div class="flex items-center">
-            <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>
-            Online
+            {{ user.personalNumber }}
           </div>
         </td>
         <td class="px-6 py-4">
@@ -212,142 +148,23 @@
           >
         </td>
       </tr>
-      <tr
-        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600"
-      >
-        <td class="w-4 p-4">
-          <div class="flex items-center">
-            <input
-              id="checkbox-table-search-2"
-              type="checkbox"
-              class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-            />
-            <label for="checkbox-table-search-2" class="sr-only"
-              >checkbox</label
-            >
-          </div>
-        </td>
-        <th
-          scope="row"
-          class="flex items-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-        >
-          <img
-            class="w-10 h-10 rounded-full"
-            src="/docs/images/people/profile-picture-2.jpg"
-            alt="Jese image"
-          />
-          <div class="ps-3">
-            <div class="text-base font-semibold">Jese Leos</div>
-            <div class="font-normal text-gray-500">jeseflowbite.com</div>
-          </div>
-        </th>
-        <td class="px-6 py-4">Vue JS Developer</td>
-        <td class="px-6 py-4">
-          <div class="flex items-center">
-            <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>
-            Online
-          </div>
-        </td>
-        <td class="px-6 py-4">
-          <a
-            href="#"
-            class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-            >Edit user</a
-          >
-        </td>
-      </tr>
-      <tr
-        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600"
-      >
-        <td class="w-4 p-4">
-          <div class="flex items-center">
-            <input
-              id="checkbox-table-search-2"
-              type="checkbox"
-              class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-            />
-            <label for="checkbox-table-search-2" class="sr-only"
-              >checkbox</label
-            >
-          </div>
-        </td>
-        <th
-          scope="row"
-          class="flex items-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-        >
-          <img
-            class="w-10 h-10 rounded-full"
-            src="/docs/images/people/profile-picture-5.jpg"
-            alt="Jese image"
-          />
-          <div class="ps-3">
-            <div class="text-base font-semibold">Thomas Lean</div>
-            <div class="font-normal text-gray-500">thomesflowbite.com</div>
-          </div>
-        </th>
-        <td class="px-6 py-4">UI/UX Engineer</td>
-        <td class="px-6 py-4">
-          <div class="flex items-center">
-            <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>
-            Online
-          </div>
-        </td>
-        <td class="px-6 py-4">
-          <a
-            href="#"
-            class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-            >Edit user</a
-          >
-        </td>
-      </tr>
-      <tr
-        class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600"
-      >
-        <td class="w-4 p-4">
-          <div class="flex items-center">
-            <input
-              id="checkbox-table-search-3"
-              type="checkbox"
-              class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-            />
-            <label for="checkbox-table-search-3" class="sr-only"
-              >checkbox</label
-            >
-          </div>
-        </td>
-        <th
-          scope="row"
-          class="flex items-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-        >
-          <img
-            class="w-10 h-10 rounded-full"
-            src="/docs/images/people/profile-picture-4.jpg"
-            alt="Jese image"
-          />
-          <div class="ps-3">
-            <div class="text-base font-semibold">Leslie Livingston</div>
-            <div class="font-normal text-gray-500">leslieflowbite.com</div>
-          </div>
-        </th>
-        <td class="px-6 py-4">SEO Specialist</td>
-        <td class="px-6 py-4">
-          <div class="flex items-center">
-            <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div>
-            Offline
-          </div>
-        </td>
-        <td class="px-6 py-4">
-          <a
-            href="#"
-            class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-            >Edit user</a
-          >
-        </td>
-      </tr>
+      }
     </tbody>
   </table>
+  <mat-paginator
+    [length]="6"
+    [pageSize]="2"
+    [pageSizeOptions]="[3, 5, 10, 25, 100]"
+    [pageIndex]="1"
+    (page)="handlePage($event)"
+    aria-label="Select page"
+    [showFirstLastButtons]="true"
+  >
+  </mat-paginator>
 </div>
 
-<!-- for(user of users();track user.id){
+<!-- <input type="text"  /> -->
+
+<!-- @for(user of users();track user.id){
 <li (click)="goToDetails(user.id)">{{ user.firstName }} {{ user.lastName }}</li>
 } -->

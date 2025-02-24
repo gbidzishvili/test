@@ -1,7 +1,14 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'add-user', pathMatch: 'full' },
+  { path: '', redirectTo: 'users-list', pathMatch: 'full' },
+  {
+    path: 'users-list',
+    loadComponent: () =>
+      import(
+        './features/users/components/users-list/users-list.component'
+      ).then((c) => c.UsersListComponent),
+  },
   {
     path: 'add-user',
     loadComponent: () =>
@@ -15,13 +22,6 @@ export const routes: Routes = [
       import('./features/users/components/add-user/add-user.component').then(
         (c) => c.AddUserComponent
       ),
-  },
-  {
-    path: 'users-list',
-    loadComponent: () =>
-      import(
-        './features/users/components/users-list/users-list.component'
-      ).then((c) => c.UsersListComponent),
   },
   {
     path: 'user/:id',
