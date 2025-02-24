@@ -28,6 +28,7 @@ export class UsersListComponent {
   public router = inject(Router);
   filterValue = signal('');
   users = toSignal(this.getUsers());
+  isSortMenuOpen = signal(true);
   ngOnInit() {}
   goToDetails(id: string) {
     this.router.navigate([`/user/${id}`]);
