@@ -9,6 +9,7 @@ import {
   Inject,
   Injector,
   Input,
+  OnDestroy,
 } from '@angular/core';
 import { TooltipComponent } from '../components/tooltip/tooltip.component';
 
@@ -16,50 +17,15 @@ import { TooltipComponent } from '../components/tooltip/tooltip.component';
   selector: '[tooltip]',
   standalone: true,
 })
-export class TooltipDirective {
+export class TooltipDirective implements OnDestroy {
   @Input() tooltipText: any = '';
   private tooltipComponent?: ComponentRef<any>;
   private pressTimeout?: any;
   private pressDuration = 300;
-  private isDesktop(): boolean {
-    return window.innerWidth > 768;
-  }
-  @HostListener('touchstart', ['$event'])
-  onTouchStart(event: TouchEvent) {
-    if (this.tooltipComponent) {
-      return;
-    }
-    this.pressTimeout = setTimeout(() => {
-      const tooltipComponentFactory =
-        this.componentFactoryResolver.resolveComponentFactory(TooltipComponent);
-      this.tooltipComponent = tooltipComponentFactory.create(this.injector);
-      this.document.body.appendChild(
-        this.tooltipComponent.location.nativeElement
-      );
-      this.setTooltipComponentProperties();
-      this.tooltipComponent.hostView.detectChanges();
-    }, this.pressDuration);
-    event.preventDefault();
-  }
-  @HostListener('touchend')
-  @HostListener('mouseup')
-  onPressEnd() {
-    if (this.pressTimeout) {
-      clearTimeout(this.pressTimeout);
-      this.pressTimeout = undefined;
-    }
-    if (!this.tooltipComponent) {
-      return;
-    }
-    if (this.tooltipComponent) {
-      this.appRef.detachView(this.tooltipComponent.hostView);
-      this.tooltipComponent = undefined;
-    }
-  }
 
   @HostListener('mouseenter')
   onMouseEnter() {
-    if (this.tooltipComponent || !this.isDesktop()) {
+    if (this.tooltipComponent) {
       return;
     }
     const tooltipComponentFactory =
@@ -71,13 +37,32 @@ export class TooltipDirective {
     this.setTooltipComponentProperties();
     this.tooltipComponent.hostView.detectChanges();
   }
+
   @HostListener('mouseleave')
   onMouseLeave() {
-    if (!this.tooltipComponent || !this.isDesktop()) {
-      return;
+    this.destroyTooltip();
+  }
+
+  @HostListener('window:scroll')
+  onWindowScroll() {
+    this.destroyTooltip();
+  }
+
+  @HostListener('window:resize')
+  onWindowResize() {
+    this.destroyTooltip();
+  }
+
+  ngOnDestroy() {
+    this.destroyTooltip();
+  }
+
+  private destroyTooltip() {
+    if (this.tooltipComponent) {
+      this.appRef.detachView(this.tooltipComponent.hostView);
+      this.tooltipComponent.destroy();
+      this.tooltipComponent = undefined;
     }
-    this.appRef.detachView(this.tooltipComponent.hostView);
-    this.tooltipComponent = undefined;
   }
 
   private setTooltipComponentProperties() {

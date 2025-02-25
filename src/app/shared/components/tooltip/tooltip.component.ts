@@ -26,6 +26,7 @@ import {
         font-size: 12px;
         white-space: nowrap;
         margin-top: 5px;
+        pointer-events: none;
       }
     `,
   ],
