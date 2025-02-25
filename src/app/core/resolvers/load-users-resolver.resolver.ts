@@ -2,7 +2,15 @@ import { inject } from '@angular/core';
 import { ActivatedRouteSnapshot, ResolveFn, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { of, EMPTY, Observable } from 'rxjs';
-import { catchError, filter, first, map, take, tap } from 'rxjs/operators';
+import {
+  catchError,
+  delay,
+  filter,
+  first,
+  map,
+  take,
+  tap,
+} from 'rxjs/operators';
 import { AppState } from '../../state/app.state';
 import {
   selectAllUsers,
@@ -17,11 +25,18 @@ import { UsersService } from '../../features/users/services/users.service';
 export const loadUsersResolver: ResolveFn<any> = () => {
   const usersService = inject(UsersService);
   const store = inject(Store);
-  // Return the list of users once they are loaded
-  return usersService.loadUsersByPage(1, 7).pipe(
-    map((v: any) => {
-      loadUsersSuccess({ users: v, count: 5 });
-      return v;
+  return usersService.loadUsersByPage(0, 6).pipe(
+    tap((response: any) => {
+      const users = response.body;
+      const totalCount = response['headers'].get('X-Total-Count');
+      if (users.length > 0) {
+        store.dispatch(
+          loadUsersSuccess({
+            users: users,
+            count: totalCount,
+          })
+        );
+      }
     })
   );
 };

@@ -9,7 +9,12 @@ import { PaginatorIntlService } from './paginator-intl.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Store } from '@ngrx/store';
 import { selectUsersCount } from '../../../../../state/users/user.selectors';
-import { loadUsersBypage } from '../../../../../state/users/user.action';
+import {
+  loadUsersBypage,
+  loadUsersSuccess,
+} from '../../../../../state/users/user.action';
+import { ActivatedRoute } from '@angular/router';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-pagination',
@@ -23,9 +28,27 @@ export class PaginationComponent implements OnInit {
   currentPage = signal(0);
   pageSize = signal(10);
   userslength = toSignal(this.store.select(selectUsersCount));
+  activatedRoute = inject(ActivatedRoute);
 
   ngOnInit(): void {
-    this.dispatchLoadUsersByPage();
+    // this.dispatchLoadUsersByPage();
+    // this.activatedRoute.data
+    //   .pipe(
+    //   tap((response) => {
+    //     const users = response['usersLoaded']['body'];
+    //     const totalCount =
+    //       response['usersLoaded']['headers'].get('X-Total-Count');
+    //     if (users.length > 0) {
+    //       this.store.dispatch(
+    //         loadUsersSuccess({
+    //           users: users,
+    //           count: 17,
+    //         })
+    //       );
+    //     }
+    //   })
+    // )
+    // .subscribe();
   }
   handlePage(pageEvent: PageEvent) {
     this.currentPage.set(pageEvent.pageIndex);

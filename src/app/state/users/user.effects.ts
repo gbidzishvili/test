@@ -70,7 +70,6 @@ export class UserEffects {
       ofType(loadUsers),
       switchMap(() =>
         this.usersService.loadAllUsers().pipe(
-          tap((v) => console.log('loadUsers', v)),
           map((users: User[]) => loadUsersSuccess({ users })),
           catchError((error) => of(loadUsersFailure({ error })))
         )

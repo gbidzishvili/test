@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { User } from '../models/user.model';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { selectPageSize } from '../../../state/users/user.selectors';
