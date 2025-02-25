@@ -39,7 +39,7 @@ export class UsersService {
   }
   filterUsers(value: string) {
     return this.http.get<User[]>(`${this.apiUrl}`, {
-      params: { firstName_like: `^${value}`, _limit: this.pageSize() },
+      params: { firstname_like: `^${value}`, _limit: this.pageSize() },
     });
   }
   sortUsers(label: string) {
