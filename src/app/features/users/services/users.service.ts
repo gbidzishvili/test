@@ -43,7 +43,6 @@ export class UsersService {
     });
   }
   sortUsers(label: string) {
-    console.log('lableis:', label);
     return this.http.get<User[]>(`${this.apiUrl}`, {
       params: { _sort: label, _limit: this.pageSize() },
     });

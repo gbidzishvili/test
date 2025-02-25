@@ -24,13 +24,23 @@ export interface UserState {
   pageSize: number;
   error: string | null;
   status: StatusEnum;
+  pagination: {
+    totalCount: number;
+    pageSize: number;
+    currentPage: number;
+  };
 }
 export const initialState: UserState = {
   users: [],
   totalCount: 0,
-  pageSize: 0,
+  pageSize: 10,
   error: null,
   status: StatusEnum.Pending,
+  pagination: {
+    totalCount: 0,
+    pageSize: 10,
+    currentPage: 1,
+  },
 };
 export const userReducer = createReducer(
   initialState,
@@ -54,16 +64,23 @@ export const userReducer = createReducer(
     return {
       ...state,
       users: users,
-      totalCount: count,
       error: null,
       status: StatusEnum.Success,
+      pagination: {
+        // Properly update nested pagination
+        ...state.pagination,
+        totalCount: count,
+      },
     };
   }),
   on(loadUsersFailure, (state, { error }) => ({ ...state, error: error })),
 
   on(loadUsersBypage, (state, { pageSize }) => ({
     ...state,
-    pageSize: pageSize,
+    pagination: {
+      ...state.pagination,
+      pageSize: pageSize,
+    },
   })),
 
   // filterUsers reducers

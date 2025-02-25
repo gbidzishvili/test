@@ -19,7 +19,18 @@ import {
   sortUsersSuccess,
   sortUsersFailure,
 } from './user.action';
-import { catchError, from, map, mergeMap, of, switchMap, tap } from 'rxjs';
+import {
+  catchError,
+  debounceTime,
+  delay,
+  distinctUntilChanged,
+  from,
+  map,
+  mergeMap,
+  of,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { User } from '../../features/users/models/user.model';
 
 @Injectable()
@@ -96,6 +107,8 @@ export class UserEffects {
   filterUsers$ = createEffect(() =>
     this.actions$.pipe(
       ofType(filterUsers),
+      debounceTime(500), // Wait for 500ms after the last action
+      distinctUntilChanged(),
       switchMap(({ filterByValue }) =>
         this.usersService.filterUsers(filterByValue).pipe(
           map((filteredUsers: User[]) =>
@@ -113,12 +126,13 @@ export class UserEffects {
       ofType(sortUsers),
       switchMap(({ sortLabel }) =>
         this.usersService.sortUsers(sortLabel).pipe(
-          tap((sortedUsers) => console.log('Sorted Users:', sortedUsers)), // Debugging
-
-          map((sortedUsers: User[]) =>
-            sortUsersSuccess({ sortedUsers: sortedUsers })
+          map(
+            (sortedUsers: User[]) =>
+              sortUsersSuccess({ sortedUsers: sortedUsers }) // Dispatch success action
           ),
-          catchError((error) => of(sortUsersFailure({ error: error.message })))
+          catchError(
+            (error) => of(sortUsersFailure({ error: error.message })) // Dispatch failure action
+          )
         )
       )
     )

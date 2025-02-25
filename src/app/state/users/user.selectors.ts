@@ -11,10 +11,13 @@ export const selectAllUsers = createSelector(
   (state: UserState) => state.users
 );
 export const selectUsersCount = (state: AppState) => {
-  return state.user.totalCount;
+  return state.user.pagination.totalCount;
 };
 export const selectPageSize = (state: AppState) => {
-  return state.user.pageSize;
+  return state.user.pagination.pageSize;
+};
+export const selectCurrentPage = (state: AppState) => {
+  return state.user.pagination.currentPage;
 };
 export const selectUsersLoaded = createSelector(
   selectUsers,
