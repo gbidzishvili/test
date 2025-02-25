@@ -36,8 +36,8 @@ export class UserFormComponent {
 
   initForm() {
     this.userForm = this.fb.group({
-      firstName: ['', [Validators.required]],
-      lastName: ['', [Validators.required]],
+      firstname: ['', [Validators.required]],
+      lastname: ['', [Validators.required]],
       gender: ['', [Validators.required]],
       personalNumber: ['', [Validators.required, Validators.maxLength(11)]],
       mobileNumber: ['', [Validators.required]],
@@ -55,6 +55,8 @@ export class UserFormComponent {
     const user = {
       id: userId,
       ...this.userForm.value,
+      firstname: this.userForm.value.firstname.toUpperCase(),
+      lastname: this.userForm.value.lastname.toUpperCase(),
     };
     this.store.dispatch(addUser({ user }));
     this.resetForm();

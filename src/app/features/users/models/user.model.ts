@@ -1,7 +1,7 @@
 export interface User {
   id: string;
-  firstName: string;
-  lastName: string;
+  firstname: string;
+  lastname: string;
   gender: string;
   personalNumber: number;
   mobileNumber: number;
@@ -15,5 +15,5 @@ export interface User {
     city: string;
     address: string;
   };
-  image: string | File;
+  image: string;
 }

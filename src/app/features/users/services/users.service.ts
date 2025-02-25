@@ -38,13 +38,14 @@ export class UsersService {
     });
   }
   filterUsers(value: string) {
-    return this.http.get<User[]>(
-      `${this.apiUrl}?firstName_like=^${value}&_limit=${this.pageSize()}`
-    );
+    return this.http.get<User[]>(`${this.apiUrl}`, {
+      params: { firstName_like: `^${value}`, _limit: this.pageSize() },
+    });
   }
   sortUsers(label: string) {
+    console.log('lableis:', label);
     return this.http.get<User[]>(`${this.apiUrl}`, {
-      params: { _sort: label },
+      params: { _sort: label, _limit: this.pageSize() },
     });
   }
   removeUser(id: string): Observable<string> {

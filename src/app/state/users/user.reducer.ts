@@ -36,7 +36,7 @@ export const userReducer = createReducer(
   initialState,
   on(addUser, (state, { user }) => ({
     ...state,
-    users: [...state.users, user],
+    users: [user, ...state.users],
   })),
   on(removeUser, (state, { id }) => ({
     ...state,
@@ -90,11 +90,14 @@ export const userReducer = createReducer(
     status: StatusEnum.Loading,
   })),
 
-  on(sortUsersSuccess, (state, { sortedUsers }) => ({
-    ...state,
-    users: sortedUsers,
-    status: StatusEnum.Success,
-  })),
+  on(sortUsersSuccess, (state, { sortedUsers }) => {
+    console.log('Reducer - Sorted Users:', sortedUsers); // Debugging reducer execution
+    return {
+      ...state,
+      users: [...sortedUsers], // Ensure a new array reference
+      status: StatusEnum.Success,
+    };
+  }),
 
   on(sortUsersFailure, (state, { error }) => ({
     ...state,

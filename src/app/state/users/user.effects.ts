@@ -114,6 +114,8 @@ export class UserEffects {
       ofType(sortUsers),
       switchMap(({ sortLabel }) =>
         this.usersService.sortUsers(sortLabel).pipe(
+          tap((sortedUsers) => console.log('Sorted Users:', sortedUsers)), // Debugging
+
           map((sortedUsers: User[]) =>
             sortUsersSuccess({ sortedUsers: sortedUsers })
           ),

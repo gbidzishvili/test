@@ -1,7 +1,7 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, input, signal } from '@angular/core';
 import { UsersService } from '../../services/users.service';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   MatPaginatorIntl,
   MatPaginatorModule,
@@ -15,7 +15,7 @@ import { TooltipDirective } from '../../../../shared/directives/tooltip.directiv
 import { ClickOutsideDirective } from '../../../../shared/directives/click-outside.directive';
 import { PaginationComponent } from './pagination/pagination.component';
 import { SortComponent } from './sort/sort.component';
-
+import { FallbackImageDirective } from '../../../../shared/directives/fallback-image.directive';
 @Component({
   selector: 'app-users-list',
   standalone: true,
@@ -25,15 +25,24 @@ import { SortComponent } from './sort/sort.component';
     TooltipDirective,
     PaginationComponent,
     SortComponent,
+    FallbackImageDirective,
   ],
   templateUrl: './users-list.component.html',
   providers: [{ provide: MatPaginatorIntl, useClass: PaginatorIntlService }],
 })
 export class UsersListComponent {
+  usersLoaded = input<string>('');
+
   store = inject(Store);
   usersService = inject(UsersService);
   public router = inject(Router);
   users = toSignal(this.store.select(selectAllUsers));
+  constructor(private route: ActivatedRoute) {}
+
+  ngOnInit(): void {
+    const resolvedData = this.route.snapshot.data['usersLoaded'];
+    console.log('Are users loaded?', resolvedData); // Will log `true`
+  }
   updatefilterValue(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.store.dispatch(filterUsers({ filterByValue: filterValue }));

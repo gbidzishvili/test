@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { loadUsersResolver } from './core/resolvers/load-users-resolver.resolver';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'users-list', pathMatch: 'full' },
@@ -8,6 +9,9 @@ export const routes: Routes = [
       import(
         './features/users/components/users-list/users-list.component'
       ).then((c) => c.UsersListComponent),
+    resolve: {
+      usersLoaded: loadUsersResolver,
+    },
   },
   {
     path: 'add-user',

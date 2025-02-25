@@ -16,3 +16,7 @@ export const selectUsersCount = (state: AppState) => {
 export const selectPageSize = (state: AppState) => {
   return state.user.pageSize;
 };
+export const selectUsersLoaded = createSelector(
+  selectUsers,
+  (usersState) => usersState.status === 'success' && usersState.users.length > 0
+);

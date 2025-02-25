@@ -21,7 +21,7 @@ import { loadUsersBypage } from '../../../../../state/users/user.action';
 export class PaginationComponent implements OnInit {
   store = inject(Store);
   currentPage = signal(0);
-  pageSize = signal(1);
+  pageSize = signal(10);
   userslength = toSignal(this.store.select(selectUsersCount));
 
   ngOnInit(): void {
