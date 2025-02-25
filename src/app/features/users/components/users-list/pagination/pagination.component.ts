@@ -1,4 +1,10 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   MatPaginatorIntl,
@@ -22,6 +28,7 @@ import { tap } from 'rxjs';
   imports: [CommonModule, MatPaginatorModule],
   templateUrl: './pagination.component.html',
   providers: [{ provide: MatPaginatorIntl, useClass: PaginatorIntlService }],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaginationComponent implements OnInit {
   store = inject(Store);

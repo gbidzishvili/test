@@ -1,4 +1,10 @@
-import { Component, inject, input, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  input,
+  signal,
+} from '@angular/core';
 import { UsersService } from '../../services/users.service';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -11,24 +17,23 @@ import { Store } from '@ngrx/store';
 import { selectAllUsers } from '../../../../state/users/user.selectors';
 import { filterUsers } from '../../../../state/users/user.action';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { TooltipDirective } from '../../../../shared/directives/tooltip.directive';
-import { ClickOutsideDirective } from '../../../../shared/directives/click-outside.directive';
 import { PaginationComponent } from './pagination/pagination.component';
 import { SortComponent } from './sort/sort.component';
-import { FallbackImageDirective } from '../../../../shared/directives/fallback-image.directive';
+import { ListComponent } from './list/list.component';
 @Component({
   selector: 'app-users-list',
   standalone: true,
   imports: [
     CommonModule,
     MatPaginatorModule,
-    TooltipDirective,
+
     PaginationComponent,
     SortComponent,
-    FallbackImageDirective,
+    ListComponent,
   ],
   templateUrl: './users-list.component.html',
   providers: [{ provide: MatPaginatorIntl, useClass: PaginatorIntlService }],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UsersListComponent {
   usersLoaded = input<string>('');

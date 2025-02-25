@@ -6,10 +6,18 @@ export const addUser = createAction(
   props<{ user: User }>()
 );
 export const updateUser = createAction(
-  '[Update User Page] Update User',
+  '[Edit User Page] Update User',
   props<{ id: string; updatedUser: User }>()
 );
+export const updateUserSuccess = createAction(
+  '[Users API] Update User Success',
+  props<{ updatedUser: User }>()
+);
 
+export const updateUserFailure = createAction(
+  '[Users API] Update User Failure',
+  props<{ error: any }>()
+);
 export const removeUser = createAction(
   '[User Details Page || Users List Page] Remove User',
   props<{ id: string }>()

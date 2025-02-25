@@ -9,7 +9,8 @@
         "@schematics/angular:component": {
           "standalone": true,
           "skipTests": true,
-          "style": "none"
+          "style": "none",
+          "changeDetection": "OnPush"
         },
         "@schematics/angular:service": {
           "skipTests": true

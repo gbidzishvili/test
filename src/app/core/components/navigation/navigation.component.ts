@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SidenavToggleService } from './services/sidenav-toggle.service';
 import { NavLeftComponent } from './nav-left/nav-left.component';
@@ -9,6 +9,7 @@ import { RouterOutlet } from '@angular/router';
   standalone: true,
   imports: [NavLeftComponent, CommonModule],
   templateUrl: './navigation.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavigationComponent {
   sidenavToggleService = inject(SidenavToggleService);

@@ -1,7 +1,9 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   ElementRef,
+  input,
   Input,
   signal,
   viewChild,
@@ -26,16 +28,18 @@ export class CustomUploaderComponent implements ControlValueAccessor {
   @Input()
   set customUploaderReset(value: boolean) {
     if (value === true) {
-      this.imageUrl.set('');
+      this._imageUrl.set('');
     }
   }
+  private _imageUrl = signal<string>('');
+  imageUrlFromParent = input<string>('');
+  imageUrl = computed(() => this._imageUrl() || this.imageUrlFromParent());
   uploader = viewChild('uploader', { read: ElementRef<any> });
-  imageUrl = signal<any>('');
   formData: any;
   onChange = (value: any) => {};
   onTouched = () => {};
   writeValue(obj: any): void {
-    // this.fileName = obj;
+    this._imageUrl.set(obj);
   }
   registerOnChange(fn: any): void {
     this.onChange = fn;
@@ -50,7 +54,7 @@ export class CustomUploaderComponent implements ControlValueAccessor {
     this.onClick();
   }
   delete() {
-    this.imageUrl.set('');
+    this._imageUrl.set('');
   }
 
   log(event: Event) {
@@ -60,7 +64,7 @@ export class CustomUploaderComponent implements ControlValueAccessor {
       reader.onloadend = () => {
         var baseStringResult = reader.result as string;
         const imageUrl = baseStringResult;
-        this.imageUrl.set(imageUrl);
+        this._imageUrl.set(imageUrl);
         this.onChange(this.imageUrl());
         filefileInputElement.value = '';
       };

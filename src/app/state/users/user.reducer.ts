@@ -14,6 +14,8 @@ import {
   sortUsersFailure,
   sortUsersSuccess,
   updateUser,
+  updateUserFailure,
+  updateUserSuccess,
 } from './user.action';
 import { selectUsers } from './user.selectors';
 import { StatusEnum } from '../enums/status.enums';
@@ -52,11 +54,22 @@ export const userReducer = createReducer(
     ...state,
     users: state.users.filter((user: User) => user.id !== id),
   })),
-  on(updateUser, (state, { id, updatedUser: updateUser }) => ({
+  on(updateUser, (state) => ({
     ...state,
-    users: state.users.map((existingUser) =>
-      existingUser.id === id ? updateUser : existingUser
+    status: StatusEnum.Loading,
+  })),
+  on(updateUserSuccess, (state, { updatedUser }) => ({
+    ...state,
+    users: state.users.map((user) =>
+      user.id === updatedUser.id ? updatedUser : user
     ),
+    error: null,
+    status: StatusEnum.Success,
+  })),
+  on(updateUserFailure, (state, { error }) => ({
+    ...state,
+    error: error,
+    status: StatusEnum.Error,
   })),
   on(loadUsers, (state) => ({ ...state, status: StatusEnum.Loading })),
   // on(updateTotalCount)

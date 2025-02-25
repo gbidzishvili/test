@@ -1,5 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  signal,
+} from '@angular/core';
 import { SidenavToggleService } from '../services/sidenav-toggle.service';
 import { RouterLink, RouterModule } from '@angular/router';
 
@@ -16,6 +21,7 @@ import { RouterLink, RouterModule } from '@angular/router';
       }
     `,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavLeftComponent {
   sidenavToggleService = inject(SidenavToggleService);

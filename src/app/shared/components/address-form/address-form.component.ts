@@ -1,5 +1,6 @@
 // address-form.component.ts
 import {
+  ChangeDetectionStrategy,
   Component,
   inject,
   input,
@@ -21,6 +22,7 @@ import {
   imports: [ReactiveFormsModule],
   templateUrl: './address-form.component.html',
   styles: [],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 
   viewProviders: [
     {

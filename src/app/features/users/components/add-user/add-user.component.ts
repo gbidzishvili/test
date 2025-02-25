@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { UserFormComponent } from './add-user-form/user-form.component';
 
 @Component({
@@ -6,5 +6,8 @@ import { UserFormComponent } from './add-user-form/user-form.component';
   standalone: true,
   imports: [UserFormComponent],
   templateUrl: './add-user.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AddUserComponent {}
+export class AddUserComponent {
+  @Input() id: string;
+}

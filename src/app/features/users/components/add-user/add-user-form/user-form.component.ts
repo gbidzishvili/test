@@ -1,4 +1,9 @@
-import { Component, inject, Input, signal, SimpleChange } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  signal,
+} from '@angular/core';
 import { CustomUploaderComponent } from '../../../../../shared/components/custom-uploader/custom-uploader.component';
 import { AddressFormComponent } from '../../../../../shared/components/address-form/address-form.component';
 import {
@@ -8,20 +13,17 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import {
-  addUser,
-  removeUser,
-  updateUser,
-} from '../../../../../state/users/user.action';
+import { addUser, updateUser } from '../../../../../state/users/user.action';
 import { UsersService } from '../../../services/users.service';
 import { v4 as uuidv4 } from 'uuid';
 import { ActivatedRoute } from '@angular/router';
-
+import { User } from '../../../models/user.model';
 @Component({
   selector: 'app-user-form',
   standalone: true,
   imports: [ReactiveFormsModule, CustomUploaderComponent, AddressFormComponent],
   templateUrl: './user-form.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserFormComponent {
   usersService = inject(UsersService);
@@ -30,10 +32,58 @@ export class UserFormComponent {
   fb = inject(FormBuilder);
   store = inject(Store);
   activatedRouter = inject(ActivatedRoute);
+  isEditMode = signal<boolean>(false);
+  userId = signal<string>('');
+
   ngOnInit(): void {
     this.initForm();
+    this.checkForEditMode();
   }
 
+  checkForEditMode() {
+    this.activatedRouter.paramMap.subscribe((params) => {
+      const id = params.get('id');
+      if (id) {
+        this.isEditMode.set(true);
+        this.userId.set(id);
+        this.usersService.getUserById(id).subscribe((user) => {
+          this.patchFormValues(user);
+        });
+      }
+    });
+  }
+
+  patchFormValues(user: User) {
+    this.addChildControlsDynamically();
+    this.userForm.patchValue({
+      firstname: user.firstname,
+      lastname: user.lastname,
+      gender: user.gender,
+      personalNumber: user.personalNumber,
+      mobileNumber: user.mobileNumber,
+      image: user.image,
+      physicalAddress: user.physicalAddress, // Assuming user has a physicalAddress property
+      legalAddress: user.legalAddress,
+    });
+  }
+  addChildControlsDynamically() {
+    this.userForm.addControl(
+      'legalAddress',
+      this.fb.group({
+        country: ['', [Validators.required]],
+        city: ['', [Validators.required]],
+        address: ['', [Validators.required]],
+      })
+    );
+    this.userForm.addControl(
+      'physicalAddress',
+      this.fb.group({
+        country: ['', [Validators.required]],
+        city: ['', [Validators.required]],
+        address: ['', [Validators.required]],
+      })
+    );
+  }
   initForm() {
     this.userForm = this.fb.group({
       firstname: ['', [Validators.required]],
@@ -43,7 +93,7 @@ export class UserFormComponent {
       mobileNumber: ['', [Validators.required]],
       image: [
         {
-          value: [],
+          value: '',
           disabled: false,
         },
       ],
@@ -51,15 +101,27 @@ export class UserFormComponent {
   }
 
   onSubmit() {
-    const userId = uuidv4();
-    const user = {
-      id: userId,
-      ...this.userForm.value,
-      firstname: this.userForm.value.firstname.toUpperCase(),
-      lastname: this.userForm.value.lastname.toUpperCase(),
-    };
-    this.store.dispatch(addUser({ user }));
-    this.resetForm();
+    if (this.isEditMode() && this.userId()) {
+      const updatedUser = {
+        id: this.userId(),
+        ...this.userForm.value,
+        firstname: this.userForm.value.firstname.toUpperCase(),
+        lastname: this.userForm.value.lastname.toUpperCase(),
+      };
+      this.store.dispatch(
+        updateUser({ id: this.userId(), updatedUser: updatedUser })
+      );
+    } else {
+      const userId = uuidv4();
+      const user = {
+        id: userId,
+        ...this.userForm.value,
+        firstname: this.userForm.value.firstname.toUpperCase(),
+        lastname: this.userForm.value.lastname.toUpperCase(),
+      };
+      this.store.dispatch(addUser({ user }));
+      this.resetForm();
+    }
   }
   resetForm() {
     this.userForm.reset();

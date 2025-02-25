@@ -10,6 +10,7 @@ import {
   loadUsersFailure,
   loadUsersSuccess,
   removeUser,
+  updateUsersTotalCount,
   updateUser,
   filterUsers,
   filterUsersSuccess,
@@ -17,21 +18,8 @@ import {
   sortUsers,
   sortUsersSuccess,
   sortUsersFailure,
-  updateUserFailure,
-  updateUserSuccess,
 } from './user.action';
-import {
-  catchError,
-  debounceTime,
-  delay,
-  distinctUntilChanged,
-  from,
-  map,
-  mergeMap,
-  of,
-  switchMap,
-  tap,
-} from 'rxjs';
+import { catchError, from, map, mergeMap, of, switchMap, tap } from 'rxjs';
 import { User } from '../../features/users/models/user.model';
 
 @Injectable()
@@ -62,16 +50,20 @@ export class UserEffects {
       ),
     { dispatch: false } // Do not dispatch any action after removal
   );
-  updateUser$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(updateUser),
-      mergeMap(({ id, updatedUser: updateUser }) =>
-        this.usersService.updateUser(id, updateUser).pipe(
-          map((response) => updateUserSuccess({ updatedUser: response })),
-          catchError((error) => of(updateUserFailure({ error })))
+  updateUser$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(updateUser),
+        switchMap(({ id, updatedUser: updateUser }) =>
+          this.usersService.updateUser(id, updateUser).pipe(
+            catchError((error) => {
+              console.error('Error removing user:', error);
+              return of({ type: '[User] Update User Failure', error });
+            })
+          )
         )
-      )
-    )
+      ),
+    { dispatch: false } // Do not dispatch any action after removal
   );
   loadUsers$ = createEffect(() =>
     this.actions$.pipe(
@@ -104,8 +96,6 @@ export class UserEffects {
   filterUsers$ = createEffect(() =>
     this.actions$.pipe(
       ofType(filterUsers),
-      debounceTime(500), // Wait for 500ms after the last action
-      distinctUntilChanged(),
       switchMap(({ filterByValue }) =>
         this.usersService.filterUsers(filterByValue).pipe(
           map((filteredUsers: User[]) =>
@@ -123,13 +113,12 @@ export class UserEffects {
       ofType(sortUsers),
       switchMap(({ sortLabel }) =>
         this.usersService.sortUsers(sortLabel).pipe(
-          map(
-            (sortedUsers: User[]) =>
-              sortUsersSuccess({ sortedUsers: sortedUsers }) // Dispatch success action
+          tap((sortedUsers) => console.log('Sorted Users:', sortedUsers)), // Debugging
+
+          map((sortedUsers: User[]) =>
+            sortUsersSuccess({ sortedUsers: sortedUsers })
           ),
-          catchError(
-            (error) => of(sortUsersFailure({ error: error.message })) // Dispatch failure action
-          )
+          catchError((error) => of(sortUsersFailure({ error: error.message })))
         )
       )
     )

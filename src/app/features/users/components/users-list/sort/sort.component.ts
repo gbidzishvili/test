@@ -1,5 +1,10 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  signal,
+} from '@angular/core';
 import { environment } from '../../../../../environments/environment';
 import { ClickOutsideDirective } from '../../../../../shared/directives/click-outside.directive';
 import { CommonModule } from '@angular/common';
@@ -18,6 +23,7 @@ interface Filters {
   standalone: true,
   imports: [CommonModule, ClickOutsideDirective],
   templateUrl: './sort.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SortComponent {
   store = inject(Store);

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavigationComponent } from './core/components/navigation/navigation.component';
 import { NgClass } from '@angular/common';
@@ -11,6 +11,7 @@ import { HeaderComponent } from './core/components/header/header.component';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   imports: [RouterOutlet, NavigationComponent, NgClass, HeaderComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
   title = 'ng-space-project';
