@@ -20,6 +20,9 @@ export class AccountListComponent {
   data = input<any[]>();
   cols = input<string[]>();
   store = inject(Store);
+  ngOnInit() {
+    // this.store.dispatch(loadAllAccounts());
+  }
   deleteAccount(id: string) {
     this.store.dispatch(removeAccount({ id }));
   }

@@ -48,17 +48,6 @@ export class UserEffects {
       )
     )
   );
-  addAccount$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(addAccount),
-      switchMap(({ account }) =>
-        this.accountService.addAccount(account).pipe(
-          map(() => addAccountSuccess({ account })),
-          catchError((error) => of(addAccountFailure({ error })))
-        )
-      )
-    )
-  );
   removeUser$ = createEffect(() =>
     this.actions$.pipe(
       ofType(removeUser),
@@ -70,6 +59,18 @@ export class UserEffects {
       )
     )
   );
+  addAccount$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(addAccount),
+      switchMap(({ account }) =>
+        this.accountService.addAccount(account).pipe(
+          map(() => addAccountSuccess({ account })),
+          catchError((error) => of(addAccountFailure({ error })))
+        )
+      )
+    )
+  );
+
   removeAccount$ = createEffect(() =>
     this.actions$.pipe(
       ofType(removeAccount),
@@ -108,7 +109,6 @@ export class UserEffects {
       ofType(loadAccounts),
       switchMap(() =>
         this.accountService.loadAllAccounts().pipe(
-          tap((v) => console.log('loadAccounts', v)),
           map((accounts: Account[]) => loadAccountsSuccess({ accounts })),
           catchError((error) => of(loadAccountsFailure({ error })))
         )

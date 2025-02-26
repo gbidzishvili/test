@@ -24,4 +24,7 @@ export class ListComponent {
   goToDetails(id: string) {
     this.router.navigate([`/user/${id}`]);
   }
+  goToEdit(id: string) {
+    this.router.navigate([`/edit/${id}`]);
+  }
 }

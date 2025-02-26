@@ -50,9 +50,14 @@ export const reducer = createReducer(
   })),
   on(removeUser, (state, { id }) => ({
     ...state,
-    users: state.users.filter((user: User) => user.id !== id),
+    // users: state.users.filter((user: User) => user.id !== id),
   })),
-
+  on(removeUserSuccess, (state, { id }) => {
+    return {
+      ...state,
+      // users: state.users.filter((user: User) => user.id !== id),
+    };
+  }),
   on(updateUser, (state) => ({
     ...state,
     status: StatusEnum.Loading,
@@ -63,8 +68,6 @@ export const reducer = createReducer(
     status: StatusEnum.Loading,
   })),
 
-  //onsuccess
-
   on(addUserSuccess, (state, { user }) => {
     alert('User Added Successfully');
     return {
@@ -74,28 +77,34 @@ export const reducer = createReducer(
       status: StatusEnum.Success,
     };
   }),
-  on(removeUserSuccess, (state, { id }) => {
-    // alert('user removed successfully');
+  on(loadAccountsSuccess, (state, { accounts }) => {
+    const validAccounts = Array.isArray(accounts) ? accounts : [];
     return {
       ...state,
-      users: state.users.filter((user: User) => user.id !== id),
+      accounts: [...validAccounts],
     };
   }),
+
   on(removeAccountSuccess, (state, { id }) => {
+    alert('Account has removed successfully');
     return {
       ...state,
       accounts: state.accounts.filter((account: Account) => account.id !== id),
     };
   }),
 
-  on(updateUserSuccess, (state, { updatedUser }) => ({
-    ...state,
-    users: state.users.map((user) =>
-      user.id === updatedUser.id ? updatedUser : user
-    ),
-    error: null,
-    status: StatusEnum.Success,
-  })),
+  on(updateUserSuccess, (state, { updatedUser }) => {
+    const validUpdatedUser =
+      updatedUser && typeof updatedUser === 'object' ? updatedUser : null;
+    return {
+      ...state,
+      users: state.users.map((user) =>
+        user.id === validUpdatedUser?.id ? validUpdatedUser : user
+      ),
+      error: null,
+      status: StatusEnum.Success,
+    };
+  }),
 
   on(loadUsersSuccess, (state, { users }) => {
     return {

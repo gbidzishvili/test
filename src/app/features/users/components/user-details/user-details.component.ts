@@ -57,10 +57,10 @@ export class UserDetailsComponent {
 
   openDialog(): void {
     const pendingDialog = this.dialog.open(AddNewAccountComponent, {
-      width: '250px',
+      width: '400px',
     });
     pendingDialog.backdropClick().subscribe(() => {
-      pendingDialog.close(); // Manually close the dialog
+      pendingDialog.close();
     });
   }
   ngOnInit() {

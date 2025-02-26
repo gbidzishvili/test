@@ -16,7 +16,7 @@ import { Store } from '@ngrx/store';
 import { addUser, updateUser } from '../../../../../state/users/user.action';
 import { UsersService } from '../../../services/users.service';
 import { v4 as uuidv4 } from 'uuid';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../../../models/user.model';
 import { CustomValidatorsService } from './custom-validators.service';
 import { CommonModule } from '@angular/common';
@@ -41,6 +41,8 @@ export class UserFormComponent {
   activatedRouter = inject(ActivatedRoute);
   isEditMode = signal<boolean>(false);
   userId = signal<string>('');
+  router = inject(Router);
+
   customValidators = inject(CustomValidatorsService);
   ngOnInit(): void {
     this.initForm();
@@ -50,7 +52,7 @@ export class UserFormComponent {
     this.userForm = this.fb.group({
       firstname: ['', this.customValidators.getNameSurnameValidators()],
       lastname: ['', this.customValidators.getNameSurnameValidators()],
-      gender: ['', [Validators.required]],
+      gender: ['', []],
       personalNumber: ['', this.customValidators.getPersonalNumberValidators()],
       mobileNumber: [
         '',
@@ -111,30 +113,25 @@ export class UserFormComponent {
       })
     );
   }
-
+  getUser() {
+    const userFormValue = this.userForm.value;
+    return {
+      ...userFormValue,
+      firstname: userFormValue.firstname.toUpperCase(),
+      lastname: userFormValue.lastname.toUpperCase(),
+    };
+  }
   onSubmit() {
-    if (this.userForm.valid) {
-      if (this.isEditMode() && this.userId()) {
-        const updatedUser = {
-          ...this.userForm.value,
-        };
-        this.store.dispatch(
-          updateUser({ id: this.userId(), updatedUser: updatedUser })
-        );
-      } else {
-        const userId = uuidv4();
-        const user = {
-          id: userId,
-          ...this.userForm.value,
-          firstname: this.userForm.value.firstname.toUpperCase(),
-          lastname: this.userForm.value.lastname.toUpperCase(),
-        };
-        this.store.dispatch(addUser({ user }));
-        this.resetForm();
-      }
+    if (!this.userForm.valid) return;
+    const user = this.getUser();
+    if (this.isEditMode() && this.userId()) {
+      this.store.dispatch(updateUser({ id: this.userId(), updatedUser: user }));
     } else {
-      alert('Error happened, Enter valid credentials');
+      const userId = uuidv4();
+      this.store.dispatch(addUser({ user: { id: userId, ...user } }));
+      this.resetForm();
     }
+    this.router.navigate(['/users-list']);
   }
   resetForm() {
     this.userForm.reset();

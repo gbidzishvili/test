@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { loadUsersResolver } from './core/resolvers/load-users-resolver.resolver';
+import { userExistGuard } from './core/guards/user-exist.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'users-list', pathMatch: 'full' },
@@ -26,6 +27,7 @@ export const routes: Routes = [
       import('./features/users/components/add-user/add-user.component').then(
         (c) => c.AddUserComponent
       ),
+    canActivate: [userExistGuard],
   },
   {
     path: 'user/:id',
@@ -33,6 +35,7 @@ export const routes: Routes = [
       import(
         './features/users/components/user-details/user-details.component'
       ).then((c) => c.UserDetailsComponent),
+    canActivate: [userExistGuard],
   },
   {
     path: 'pagination',
