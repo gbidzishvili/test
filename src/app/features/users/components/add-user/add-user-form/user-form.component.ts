@@ -20,6 +20,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../../../models/user.model';
 import { CustomValidatorsService } from './custom-validators.service';
 import { CommonModule } from '@angular/common';
+import { CacheRequestService } from '../../../../../core/services/cache-request.service';
 @Component({
   selector: 'app-user-form',
   standalone: true,
@@ -42,7 +43,7 @@ export class UserFormComponent {
   isEditMode = signal<boolean>(false);
   userId = signal<string>('');
   router = inject(Router);
-
+  cacheRequestService = inject(CacheRequestService);
   customValidators = inject(CustomValidatorsService);
   ngOnInit(): void {
     this.initForm();
@@ -77,7 +78,7 @@ export class UserFormComponent {
       if (id) {
         this.isEditMode.set(true);
         this.userId.set(id);
-        this.usersService.getUserById(id).subscribe((user) => {
+        this.cacheRequestService.getUserById(id).subscribe((user) => {
           this.patchFormValues(user);
         });
       }
@@ -127,7 +128,7 @@ export class UserFormComponent {
     if (this.isEditMode() && this.userId()) {
       this.store.dispatch(updateUser({ id: this.userId(), updatedUser: user }));
     } else {
-      const userId = uuidv4();
+      const userId = uuidv4().slice(0, 7);
       this.store.dispatch(addUser({ user: { id: userId, ...user } }));
       this.resetForm();
     }

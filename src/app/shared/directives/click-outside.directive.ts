@@ -17,9 +17,8 @@ export class ClickOutsideDirective {
 
   @HostListener('document:click', ['$event'])
   onClick(event: MouseEvent) {
-    // Check if the click was outside the element
     if (!this.elementRef.nativeElement.contains(event.target)) {
-      this.clickOutside.emit(event); // Emit event to notify the parent component
+      this.clickOutside.emit(event);
     }
   }
 }

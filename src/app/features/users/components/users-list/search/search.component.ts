@@ -16,7 +16,7 @@ import { filterUsers } from '../../../../../state/filter/filter.actions';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchComponent {
-  filterValue = signal<string>(''); // This will hold the value of the input
+  filterValue = signal<string>('');
   store = inject(Store);
   router = inject(Router);
   route = inject(ActivatedRoute);

@@ -16,8 +16,6 @@ import { provideStore } from '@ngrx/store';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { provideEffects } from '@ngrx/effects';
 import { UserEffects } from './state/users/user.effects';
-// import { userReducer } from './state/users/reducers/user.reducer';
-// import { paginationReducer } from './state/users/reducers/pagination.reducers';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { reducers } from './state/reducers.index';
 import { FilterEffects } from './state/filter/filter.effects';

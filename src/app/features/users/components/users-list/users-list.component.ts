@@ -19,8 +19,8 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { PaginationComponent } from './pagination/pagination.component';
 import { SortComponent } from './sort/sort.component';
 import { ListComponent } from './list/list.component';
-import { filterUsers } from '../../../../state/filter/filter.actions';
 import { SearchComponent } from './search/search.component';
+import { FacadeUsersService } from '../../../../core/services/facade-users.service';
 @Component({
   selector: 'app-users-list',
   standalone: true,
@@ -37,13 +37,11 @@ import { SearchComponent } from './search/search.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UsersListComponent {
+  facadeUsersService = inject(FacadeUsersService);
   usersLoaded = input<string>('');
-  store = inject(Store);
-  usersService = inject(UsersService);
-  public router = inject(Router);
-  users = toSignal(this.store.select(selectAllUsers));
+  users = toSignal(this.facadeUsersService.getAllUsers());
 
   goToDetails(id: string) {
-    this.router.navigate([`/user/${id}`]);
+    this.facadeUsersService.goToDetails(id);
   }
 }

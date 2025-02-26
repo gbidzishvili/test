@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { User } from '../models/user.model';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { catchError, Observable, shareReplay, tap, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Store } from '@ngrx/store';
@@ -23,6 +23,7 @@ export class UsersService {
   private currentPage = toSignal(this.store.select(selectCurrentPage));
   sortBy = toSignal(this.store.select(selectSortValue));
   filter = toSignal(this.store.select(selectFilterValue));
+
   constructor(private http: HttpClient) {}
   addUser(user: User): Observable<User> {
     return this.http.post<User>(this.apiUrl, user);
@@ -40,7 +41,6 @@ export class UsersService {
       .set('_limit', this.pageSize())
       .set('_sort', this.sortBy())
       .set('firstname_like', this.filter());
-    console.log('sortBy', this.sortBy(), this.filter());
     return this.http.get(`${this.apiUrl}`, {
       params,
       observe: 'response',
@@ -65,8 +65,5 @@ export class UsersService {
   }
   removeUser(id: string): Observable<string> {
     return this.http.delete<string>(`${this.apiUrl}/${id}`);
-  }
-  getUserById(id: string): Observable<User> {
-    return this.http.get<User>(`${this.apiUrl}/${id}`);
   }
 }

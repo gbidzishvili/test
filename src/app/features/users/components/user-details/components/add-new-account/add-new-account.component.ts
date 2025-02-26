@@ -52,7 +52,7 @@ export class AddNewAccountComponent {
     });
   }
   onSubmit() {
-    const accountId = uuidv4();
+    const accountId = uuidv4().slice(0, 7);
     const account = {
       id: accountId,
       clId: this.accountService.userId(),

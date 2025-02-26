@@ -17,7 +17,7 @@
   <ul class="py-1 text-sm text-gray-700 dark:text-gray-200">
     @for(filter of filters();track filter.id){
     <li
-      (click)="sortUsers(filter.label)"
+      (click)="facadeUserService.sortUsers(filter.label)"
       class="border-b border-gray-100 last:border-none"
     >
       <a

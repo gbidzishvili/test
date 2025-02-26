@@ -23,7 +23,6 @@ export class HeaderComponent {
     this.sidenavToggleService.sidebarVisible.set(
       !this.sidenavToggleService.sidebarVisible()
     );
-    console.log('isVisible', this.sidenavToggleService.sidebarVisible());
   }
   toggleUserMenu() {
     this.isMenuOpen.set(!this.isMenuOpen());

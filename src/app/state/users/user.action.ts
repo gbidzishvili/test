@@ -67,7 +67,10 @@ export const removeUser = createAction(
 );
 
 export const loadUsers = createAction('[User Dashboard Page] Load Users');
-export const loadAccounts = createAction('[User Details Page] Load Accounts');
+export const loadAccounts = createAction(
+  '[User Details Page] Load Accounts',
+  props<{ id: string }>()
+);
 
 export const loadUsersSuccess = createAction(
   '[Users API] User Load Success',

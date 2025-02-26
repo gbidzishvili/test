@@ -43,10 +43,9 @@ export class TooltipComponent implements AfterViewInit, OnInit {
     const tooltipElement = this.tooltipContainer.nativeElement;
     const tooltipWidth = tooltipElement.offsetWidth;
 
-    // Adjust the `left` position if the tooltip is overflowing
     const adjustment = Math.floor(tooltipWidth / 2);
     if (adjustment > this.left) {
-      this.left += adjustment - this.left + 1; // Adjust the position
+      this.left += adjustment - this.left + 1;
       tooltipElement.style.left = `${this.left}px`;
     } else if (adjustment + this.left >= window.innerWidth - 2) {
       tooltipElement.style.right = `${-adjustment}px`;

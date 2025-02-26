@@ -50,14 +50,7 @@ export const reducer = createReducer(
   })),
   on(removeUser, (state, { id }) => ({
     ...state,
-    // users: state.users.filter((user: User) => user.id !== id),
   })),
-  on(removeUserSuccess, (state, { id }) => {
-    return {
-      ...state,
-      // users: state.users.filter((user: User) => user.id !== id),
-    };
-  }),
   on(updateUser, (state) => ({
     ...state,
     status: StatusEnum.Loading,

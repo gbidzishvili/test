@@ -107,8 +107,8 @@ export class UserEffects {
   loadAccounts$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadAccounts),
-      switchMap(() =>
-        this.accountService.loadAllAccounts().pipe(
+      switchMap(({ id }) =>
+        this.accountService.loadAllAccounts(id).pipe(
           map((accounts: Account[]) => loadAccountsSuccess({ accounts })),
           catchError((error) => of(loadAccountsFailure({ error })))
         )

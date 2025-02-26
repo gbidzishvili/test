@@ -13,14 +13,10 @@ import { RouterOutlet } from '@angular/router';
 })
 export class NavigationComponent {
   sidenavToggleService = inject(SidenavToggleService);
-  ngOnInit() {
-    console.log('isVisible', this.sidenavToggleService.sidebarVisible());
-  }
 
   toggleSidebar() {
     this.sidenavToggleService.sidebarVisible.set(
       !this.sidenavToggleService.sidebarVisible()
     );
-    console.log('isVisible', this.sidenavToggleService.sidebarVisible());
   }
 }

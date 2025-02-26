@@ -13,11 +13,7 @@ import { tap } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { ActivatedRoute, Router } from '@angular/router';
 import { sortUsers } from '../../../../../state/filter/filter.actions';
-
-interface Filters {
-  id: number;
-  label: string;
-}
+import { FacadeUsersService } from '../../../../../core/services/facade-users.service';
 
 @Component({
   selector: 'app-sort',
@@ -27,28 +23,10 @@ interface Filters {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SortComponent {
-  store = inject(Store);
-  public http = inject(HttpClient);
-  router = inject(Router);
-  route = inject(ActivatedRoute);
+  facadeUserService = inject(FacadeUsersService);
   isSortMenuOpen = signal(false);
-  private apiUrl = environment.apiUrl;
-  filters = toSignal(this.fetchFilters());
-  fetchFilters() {
-    return this.http.get<Filters[]>(`${this.apiUrl}/filters`);
-  }
-  sortUsers(label: string) {
-    this.addqueryParams(label);
-    this.store.dispatch(sortUsers({ sortLabel: label }));
-  }
-  addqueryParams(label) {
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: { _sort: label },
-      queryParamsHandling: 'merge',
-      replaceUrl: true,
-    });
-  }
+  filters = toSignal(this.facadeUserService.fetchFilters());
+
   closeSortMenu() {
     this.isSortMenuOpen.set(false);
   }

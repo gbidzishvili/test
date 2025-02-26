@@ -1,6 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { Account } from '../../../models/account.model';
-import { Observable, tap } from 'rxjs';
+import { filter, map, Observable, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
 
@@ -16,12 +16,16 @@ export class AccountsService {
     return this.http.post<Account>(`${this.apiUrl}`, account);
   }
 
-  loadAllAccounts(): Observable<Account[]> {
-    return this.http.get<Account[]>(this.apiUrl);
+  loadAllAccounts(id: string): Observable<Account[]> {
+    return this.http.get<Account[]>(`${this.apiUrl}`).pipe(
+      map((accounts) =>
+        accounts.filter((account) => {
+          return account.clId.trim() == id.trim();
+        })
+      )
+    );
   }
   removeAccount(id: string): Observable<string> {
-    return this.http
-      .delete<string>(`${this.apiUrl}/${id}`)
-      .pipe(tap((v) => console.log('rame', v)));
+    return this.http.delete<string>(`${this.apiUrl}/${id}`);
   }
 }

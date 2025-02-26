@@ -56,7 +56,7 @@ export class FilterEffects {
   filterUsers$ = createEffect(() =>
     this.actions$.pipe(
       ofType(filterUsers),
-      debounceTime(500), // Wait for 500ms after the last action
+      debounceTime(500),
       distinctUntilChanged(),
       switchMap(({ filterByValue }) =>
         this.usersService.filterUsers(filterByValue).pipe(
@@ -75,17 +75,13 @@ export class FilterEffects {
       ofType(sortUsers),
       switchMap(({ sortLabel }) =>
         this.usersService.sortUsers(sortLabel).pipe(
-          concatMap(
-            (sortedUsers: User[]) => {
-              return [
-                sortUsersSuccess({ sortedUsers: sortedUsers }),
-                updateSort({ sortBy: sortLabel }),
-              ];
-            } // Dispatch success action
-          ),
-          catchError(
-            (error) => of(sortUsersFailure({ error: error.message })) // Dispatch failure action
-          )
+          concatMap((sortedUsers: User[]) => {
+            return [
+              sortUsersSuccess({ sortedUsers: sortedUsers }),
+              updateSort({ sortBy: sortLabel }),
+            ];
+          }),
+          catchError((error) => of(sortUsersFailure({ error: error.message })))
         )
       )
     )
