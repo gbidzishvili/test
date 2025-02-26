@@ -1,6 +1,6 @@
 <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
   <div class="grid grid-cols-6 gap-6 mb-6">
-    <div class="col-span-3">
+    <div class="col-span-2">
       <label
         for="first_name"
         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -16,7 +16,7 @@
         (input)="customValidators.onInputStringChange($event)"
       />
     </div>
-    <div class="col-span-3">
+    <div class="col-span-2">
       <label
         for="last_name"
         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -31,7 +31,7 @@
         placeholder="Doe"
       />
     </div>
-    <div class="col-span-3">
+    <div class="col-span-2">
       <label
         for="gender"
         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -48,7 +48,7 @@
         <option value="female">Female</option>
       </select>
     </div>
-    <div class="col-span-3">
+    <div class="col-span-2">
       <label
         for="personalNumber"
         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -96,7 +96,7 @@
     ></app-address-form>
 
     <app-custom-uploader
-      class="col-span-2"
+      class="col-span-2 col-start-5 row-start-1 row-span-2"
       [customUploaderReset]="customUploaderReset()"
       formControlName="image"
     ></app-custom-uploader>

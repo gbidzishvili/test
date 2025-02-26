@@ -40,6 +40,21 @@ export class UserFormComponent {
     this.initForm();
     this.checkForEditMode();
   }
+  initForm() {
+    this.userForm = this.fb.group({
+      firstname: ['', this.customValidators.getNameSurnameValidators()],
+      lastname: ['', this.customValidators.getNameSurnameValidators()],
+      gender: ['', [Validators.required]],
+      personalNumber: ['', this.customValidators.getPersonalNumberValidators()],
+      mobileNumber: ['', [Validators.required, Validators.maxLength(9)]],
+      image: [
+        {
+          value: '',
+          disabled: false,
+        },
+      ],
+    });
+  }
 
   checkForEditMode() {
     this.activatedRouter.paramMap.subscribe((params) => {
@@ -63,65 +78,25 @@ export class UserFormComponent {
       personalNumber: user.personalNumber,
       mobileNumber: user.mobileNumber,
       image: user.image,
-      physicalAddress: user.physicalAddress, // Assuming user has a physicalAddress property
+      physicalAddress: user.physicalAddress,
       legalAddress: user.legalAddress,
     });
   }
+
   addChildControlsDynamically() {
-    this.userForm.addControl(
-      'legalAddress',
-      this.fb.group({
-        country: ['', [Validators.required]],
-        city: ['', [Validators.required]],
-        address: ['', [Validators.required]],
-      })
-    );
-    this.userForm.addControl(
-      'physicalAddress',
-      this.fb.group({
-        country: ['', [Validators.required]],
-        city: ['', [Validators.required]],
-        address: ['', [Validators.required]],
-      })
-    );
+    this.addAddressControl('legalAddress');
+    this.addAddressControl('physicalAddress');
   }
-  initForm() {
-    this.userForm = this.fb.group({
-      firstname: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(2),
-          Validators.maxLength(50),
-          Validators.pattern(/^(?:[ა-ჰ]+|[a-zA-Z]+)$/),
-        ],
-      ],
-      lastname: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(2),
-          Validators.maxLength(50),
-          Validators.pattern(/^(?:[ა-ჰ]+|[a-zA-Z]+)$/),
-        ],
-      ],
-      gender: ['', [Validators.required]],
-      personalNumber: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(11),
-          Validators.maxLength(11),
-        ],
-      ],
-      mobileNumber: ['', [Validators.required, Validators.maxLength(9)]],
-      image: [
-        {
-          value: '',
-          disabled: false,
-        },
-      ],
-    });
+
+  addAddressControl(controlName: string) {
+    this.userForm.addControl(
+      controlName,
+      this.fb.group({
+        country: ['', [Validators.required]],
+        city: ['', [Validators.required]],
+        address: ['', [Validators.required]],
+      })
+    );
   }
 
   onSubmit() {
@@ -134,7 +109,6 @@ export class UserFormComponent {
         updateUser({ id: this.userId(), updatedUser: updatedUser })
       );
     } else {
-      // this.addChildControlsDynamically();
       const userId = uuidv4();
       console.log('formVAlue:,', this.userForm.value.firstname);
       const user = {
@@ -142,8 +116,6 @@ export class UserFormComponent {
         ...this.userForm.value,
         firstname: this.userForm.value.firstname.toUpperCase(),
         lastname: this.userForm.value.lastname.toUpperCase(),
-        // country: this.userForm?.value?.country?.toUpperCase(),
-        // city: this.userForm?.value?.city?.toUpperCase(),
       };
       console.log(user);
       this.store.dispatch(addUser({ user }));

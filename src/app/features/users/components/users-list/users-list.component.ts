@@ -42,43 +42,8 @@ export class UsersListComponent {
   usersService = inject(UsersService);
   public router = inject(Router);
   users = toSignal(this.store.select(selectAllUsers));
-  filterValue = signal<string>(''); // This will hold the value of the input
-
-  constructor(private route: ActivatedRoute) {}
-
-  ngOnInit(): void {
-    this.updateSearchValue();
-  }
-  updateSearchValue() {
-    this.route.queryParams.subscribe((params) => {
-      const searchValue = params['firstname_like'];
-      if (searchValue) {
-        this.filterValue.set(searchValue);
-      }
-    });
-  }
-  updatefilterValue(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.addqueryParams(filterValue);
-    this.store.dispatch(filterUsers({ filterByValue: filterValue }));
-  }
-  addqueryParams(filterValue) {
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: { firstname_like: filterValue },
-      queryParamsHandling: 'merge',
-      replaceUrl: true,
-    });
-  }
 
   goToDetails(id: string) {
     this.router.navigate([`/user/${id}`]);
   }
 }
-// getUsers() {
-//   return toObservable(this.filterValue).pipe(
-//     debounceTime(500),
-//     distinctUntilChanged(),
-//     switchMap((query) => this.usersService.loadAllUsers(query))
-//   );
-// }

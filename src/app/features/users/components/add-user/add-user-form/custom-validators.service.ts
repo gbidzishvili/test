@@ -1,4 +1,5 @@
 import { Injectable, signal } from '@angular/core';
+import { Validators } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root',
@@ -23,5 +24,20 @@ export class CustomValidatorsService {
     } else if (this.isEnglish() === false) {
       event.target.value = currentValue.replace(/[^ა-ჰ]/g, '');
     }
+  }
+  getNameSurnameValidators() {
+    return [
+      Validators.required,
+      Validators.minLength(2),
+      Validators.maxLength(50),
+      Validators.pattern(/^(?:[ა-ჰ]+|[a-zA-Z]+)$/),
+    ];
+  }
+  getPersonalNumberValidators() {
+    return [
+      Validators.required,
+      Validators.minLength(11),
+      Validators.maxLength(11),
+    ];
   }
 }
