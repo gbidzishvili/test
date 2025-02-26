@@ -87,10 +87,27 @@
         Remove User
       </button>
     </div>
+    <article class="p-8">
+      <div class="flex justify-between items-center p-4">
+        <div class="text-2xl font-semibold">Accounts</div>
+        <button class="bg-green-400 p-2 rounded-sm text-white font-semibold">
+          +Add Account
+        </button>
+      </div>
+      <app-account-list
+        [cols]="['acId', 'clId', 'type', 'currency', 'status', 'action']"
+        [data]="[
+          {
+            id: '3',
+            userid: '3',
+            type: 'current',
+            currency: 'GEL',
+            status: 'active'
+          }
+        ]"
+      ></app-account-list>
+    </article>
   </div>
 </section>
 
-<section>
-  <app-list [cols]="[]" [data]="['accountid']"></app-list>
-</section>
 }

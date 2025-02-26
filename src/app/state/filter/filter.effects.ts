@@ -11,17 +11,20 @@ import {
   switchMap,
 } from 'rxjs';
 import {
-  loadUsersBypage,
   loadUsersSuccess,
   loadUsersFailure,
-  filterUsers,
   filterUsersFailure,
   filterUsersSuccess,
-  sortUsers,
   sortUsersFailure,
   sortUsersSuccess,
 } from '../users/user.action';
-import { updateSort, updateUsersTotalCount } from './filter.actions';
+import {
+  filterUsers,
+  loadUsersBypage,
+  sortUsers,
+  updateSort,
+  updateUsersTotalCount,
+} from './filter.actions';
 import { Store } from '@ngrx/store';
 import { UsersService } from '../../features/users/services/users.service';
 import { AppState } from '../app.state';

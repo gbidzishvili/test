@@ -1,11 +1,11 @@
 import { createReducer, on } from '@ngrx/store';
-import { loadUsersBypage } from '../users/user.action';
 import {
   updateUsersTotalCount,
   updatePageSize,
   updateCurrentPage,
   updateFilter,
   updateSort,
+  loadUsersBypage,
 } from './filter.actions';
 
 export interface State {

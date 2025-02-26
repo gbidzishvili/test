@@ -2,15 +2,12 @@ import { createReducer, on } from '@ngrx/store';
 import { User } from '../../features/users/models/user.model';
 import {
   addUser,
-  filterUsers,
   filterUsersFailure,
   filterUsersSuccess,
   loadUsers,
-  loadUsersBypage,
   loadUsersFailure,
   loadUsersSuccess,
   removeUser,
-  sortUsers,
   sortUsersFailure,
   sortUsersSuccess,
   updateUser,
@@ -18,16 +15,20 @@ import {
   updateUserSuccess,
 } from './user.action';
 import { StatusEnum } from '../enums/status.enums';
+import { Account } from '../../features/users/models/account.model';
+import { filterUsers, sortUsers } from '../filter/filter.actions';
 
 export interface State {
   users: User[];
   error: string | null;
   status: StatusEnum;
+  accounts: Account[];
 }
 export const initialState: State = {
   users: [],
   error: null,
   status: StatusEnum.Pending,
+  accounts: [],
 };
 export const reducer = createReducer(
   initialState,
@@ -94,10 +95,10 @@ export const reducer = createReducer(
   })),
 
   on(sortUsersSuccess, (state, { sortedUsers }) => {
-    console.log('Reducer - Sorted Users:', sortedUsers); // Debugging reducer execution
+    console.log('Reducer - Sorted Users:', sortedUsers);
     return {
       ...state,
-      users: [...sortedUsers], // Ensure a new array reference
+      users: [...sortedUsers],
       status: StatusEnum.Success,
     };
   }),

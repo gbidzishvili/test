@@ -10,9 +10,9 @@ import { ClickOutsideDirective } from '../../../../../shared/directives/click-ou
 import { CommonModule } from '@angular/common';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { tap } from 'rxjs';
-import { sortUsers } from '../../../../../state/users/user.action';
 import { Store } from '@ngrx/store';
 import { ActivatedRoute, Router } from '@angular/router';
+import { sortUsers } from '../../../../../state/filter/filter.actions';
 
 interface Filters {
   id: number;

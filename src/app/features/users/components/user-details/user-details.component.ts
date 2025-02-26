@@ -22,11 +22,12 @@ import {
 } from '@angular/material/dialog';
 import { AddNewAccountComponent } from './add-new-account/add-new-account.component';
 import { ListComponent } from '../users-list/list/list.component';
+import { AccountListComponent } from './accounts-list/accounts-list.component';
 
 @Component({
   selector: 'app-user-details',
   standalone: true,
-  imports: [CommonModule, MatDialogModule, ListComponent],
+  imports: [CommonModule, MatDialogModule, AccountListComponent],
   templateUrl: './user-details.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

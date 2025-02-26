@@ -24,11 +24,6 @@ export const removeUser = createAction(
 );
 
 export const loadUsers = createAction('[User Dashboard Page] Load Users');
-///////////////////////////////////////
-export const loadUsersBypage = createAction(
-  '[Users List Page] Load Users By Page',
-  props<{ currentPage: number; pageSize: number }>()
-);
 
 export const loadUsersSuccess = createAction(
   '[Users API] User Load Success',
@@ -38,11 +33,6 @@ export const loadUsersFailure = createAction(
   '[Users API] User Load Failure',
   props<{ error: string }>()
 );
-// sort
-export const sortUsers = createAction(
-  '[Users List Page] Sort users',
-  props<{ sortLabel: string }>()
-);
 export const sortUsersSuccess = createAction(
   '[Users List Page] Sort Users Success',
   props<{ sortedUsers: User[] }>()
@@ -50,12 +40,6 @@ export const sortUsersSuccess = createAction(
 export const sortUsersFailure = createAction(
   '[Users] Sort Users Failure',
   props<{ error: string }>()
-);
-
-// Filter Actions
-export const filterUsers = createAction(
-  '[Users List Page] Filter Users',
-  props<{ filterByValue: string }>()
 );
 
 export const filterUsersSuccess = createAction(

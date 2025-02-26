@@ -15,18 +15,17 @@ import {
 import { PaginatorIntlService } from './pagination/paginator-intl.service';
 import { Store } from '@ngrx/store';
 import { selectAllUsers } from '../../../../state/users/user.selectors';
-import { filterUsers } from '../../../../state/users/user.action';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { PaginationComponent } from './pagination/pagination.component';
 import { SortComponent } from './sort/sort.component';
 import { ListComponent } from './list/list.component';
+import { filterUsers } from '../../../../state/filter/filter.actions';
 @Component({
   selector: 'app-users-list',
   standalone: true,
   imports: [
     CommonModule,
     MatPaginatorModule,
-
     PaginationComponent,
     SortComponent,
     ListComponent,

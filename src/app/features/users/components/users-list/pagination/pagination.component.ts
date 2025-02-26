@@ -14,7 +14,6 @@ import {
 import { PaginatorIntlService } from './paginator-intl.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Store } from '@ngrx/store';
-import { loadUsersBypage } from '../../../../../state/users/user.action';
 import { ActivatedRoute, Router } from '@angular/router';
 import { tap } from 'rxjs';
 import {
@@ -23,6 +22,7 @@ import {
   selectUsersCount,
 } from '../../../../../state/filter/filter.selectors';
 import {
+  loadUsersBypage,
   updateCurrentPage,
   updatePageSize,
 } from '../../../../../state/filter/filter.actions';
