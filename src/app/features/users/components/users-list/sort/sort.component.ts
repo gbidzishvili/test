@@ -45,7 +45,8 @@ export class SortComponent {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: { _sort: label },
-      queryParamsHandling: 'merge', // Preserve other query parameters
+      queryParamsHandling: 'merge',
+      replaceUrl: true, // Preserve other query parameters
     });
   }
   closeSortMenu() {

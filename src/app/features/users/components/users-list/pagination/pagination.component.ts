@@ -54,7 +54,8 @@ export class PaginationComponent {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: { _page: this.currentPage(), _limit: this.pageSize() },
-      queryParamsHandling: 'merge', // Preserve other query parameters
+      queryParamsHandling: 'merge',
+      replaceUrl: true, // Preserve other query parameters
     });
   }
   dispatchLoadUsersByPage() {

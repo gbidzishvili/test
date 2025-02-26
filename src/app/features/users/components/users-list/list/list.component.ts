@@ -17,7 +17,8 @@ import { FallbackImageDirective } from '../../../../../shared/directives/fallbac
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ListComponent {
-  users = input<User[]>();
+  data = input<any[]>();
+  cols = input<string[]>();
   public router = inject(Router);
 
   goToDetails(id: string) {

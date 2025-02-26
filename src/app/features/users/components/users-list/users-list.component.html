@@ -37,6 +37,9 @@
       />
     </div>
   </div>
-  <app-list [users]="users()"></app-list>
+  <app-list
+    [cols]="['Name', 'PN', 'Mobile Number', 'Action']"
+    [data]="users()"
+  ></app-list>
   <app-pagination></app-pagination>
 </div>
