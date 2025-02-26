@@ -1,8 +1,11 @@
 import { createReducer, on } from '@ngrx/store';
 import { User } from '../../features/users/models/user.model';
 import {
+  addAccountFailure,
   addAccountSuccess,
   addUser,
+  addUserFailure,
+  addUserSuccess,
   filterUsersFailure,
   filterUsersSuccess,
   loadAccountsFailure,
@@ -12,6 +15,7 @@ import {
   loadUsersSuccess,
   removeAccountSuccess,
   removeUser,
+  removeUserSuccess,
   sortUsersFailure,
   sortUsersSuccess,
   updateUser,
@@ -40,22 +44,50 @@ export const reducer = createReducer(
     ...state,
     users: [user, ...state.users],
   })),
+  on(sortUsers, (state) => ({
+    ...state,
+    status: StatusEnum.Loading,
+  })),
   on(removeUser, (state, { id }) => ({
     ...state,
     users: state.users.filter((user: User) => user.id !== id),
   })),
+
+  on(updateUser, (state) => ({
+    ...state,
+    status: StatusEnum.Loading,
+  })),
+  on(loadUsers, (state) => ({ ...state, status: StatusEnum.Loading })),
+  on(filterUsers, (state) => ({
+    ...state,
+    status: StatusEnum.Loading,
+  })),
+
+  //onsuccess
+
+  on(addUserSuccess, (state, { user }) => {
+    alert('User Added Successfully');
+    return {
+      ...state,
+      users: [...state.users, user],
+      error: null,
+      status: StatusEnum.Success,
+    };
+  }),
+  on(removeUserSuccess, (state, { id }) => {
+    // alert('user removed successfully');
+    return {
+      ...state,
+      users: state.users.filter((user: User) => user.id !== id),
+    };
+  }),
   on(removeAccountSuccess, (state, { id }) => {
-    console.log('Removing account with id:', id);
     return {
       ...state,
       accounts: state.accounts.filter((account: Account) => account.id !== id),
     };
   }),
 
-  on(updateUser, (state) => ({
-    ...state,
-    status: StatusEnum.Loading,
-  })),
   on(updateUserSuccess, (state, { updatedUser }) => ({
     ...state,
     users: state.users.map((user) =>
@@ -64,13 +96,7 @@ export const reducer = createReducer(
     error: null,
     status: StatusEnum.Success,
   })),
-  on(updateUserFailure, (state, { error }) => ({
-    ...state,
-    error: error,
-    status: StatusEnum.Error,
-  })),
-  on(loadUsers, (state) => ({ ...state, status: StatusEnum.Loading })),
-  ////////////
+
   on(loadUsersSuccess, (state, { users }) => {
     return {
       ...state,
@@ -87,36 +113,12 @@ export const reducer = createReducer(
       status: StatusEnum.Success,
     };
   }),
-
-  on(loadUsersFailure, (state, { error }) => ({ ...state, error: error })),
-  on(loadAccountsFailure, (state, { error }) => ({ ...state, error: error })),
-
-  // filterUsers reducers
-  on(filterUsers, (state) => ({
-    ...state,
-    status: StatusEnum.Loading,
-  })),
-
   on(filterUsersSuccess, (state, { filteredUsers }) => ({
     ...state,
     users: filteredUsers,
     status: StatusEnum.Success,
   })),
-
-  on(filterUsersFailure, (state, { error }) => ({
-    ...state,
-    error: error,
-    status: StatusEnum.Error,
-  })),
-
-  // sortUsers reducers
-  on(sortUsers, (state) => ({
-    ...state,
-    status: StatusEnum.Loading,
-  })),
-
   on(sortUsersSuccess, (state, { sortedUsers }) => {
-    console.log('Reducer - Sorted Users:', sortedUsers);
     return {
       ...state,
       users: [...sortedUsers],
@@ -124,9 +126,24 @@ export const reducer = createReducer(
     };
   }),
 
+  // onfailure
   on(sortUsersFailure, (state, { error }) => ({
     ...state,
     error: error,
     status: StatusEnum.Error,
-  }))
+  })),
+  on(filterUsersFailure, (state, { error }) => ({
+    ...state,
+    error: error,
+    status: StatusEnum.Error,
+  })),
+  on(addUserFailure, (state, { error }) => ({ ...state, error: error })),
+  on(updateUserFailure, (state, { error }) => ({
+    ...state,
+    error: error,
+    status: StatusEnum.Error,
+  })),
+  on(addAccountFailure, (state, { error }) => ({ ...state, error: error })),
+  on(loadUsersFailure, (state, { error }) => ({ ...state, error: error })),
+  on(loadAccountsFailure, (state, { error }) => ({ ...state, error: error }))
 );

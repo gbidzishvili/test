@@ -6,6 +6,14 @@ export const addUser = createAction(
   '[Add User Page] Add User',
   props<{ user: User }>()
 );
+export const addUserSuccess = createAction(
+  '[User API] add User Success',
+  props<{ user: User }>()
+);
+export const addUserFailure = createAction(
+  '[Users API] Add User Failure',
+  props<{ error: any }>()
+);
 export const addAccount = createAction(
   '[User Details Page] Add Account',
   props<{ account: Account }>()
@@ -25,6 +33,14 @@ export const removeAccount = createAction(
 export const removeAccountSuccess = createAction(
   '[Users API] Remove Account Success',
   props<{ id: string }>()
+);
+export const removeUserSuccess = createAction(
+  '[Users API] Remove User Success',
+  props<{ id: string }>()
+);
+export const removeUserFailure = createAction(
+  '[Users API] Remove User Failure',
+  props<{ error: any }>()
 );
 
 export const removeAccountFailure = createAction(

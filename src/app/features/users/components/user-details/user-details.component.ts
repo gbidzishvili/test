@@ -13,27 +13,25 @@ import { BehaviorSubject, map, Observable, of, switchMap, tap } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { CommonModule } from '@angular/common';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
-import {
-  addAccount,
-  loadAccounts,
-  removeUser,
-} from '../../../../state/users/user.action';
+import { loadAccounts, removeUser } from '../../../../state/users/user.action';
 import { environment } from '../../../../environments/environment';
-import {
-  MatDialog,
-  MatDialogModule,
-  MatDialogRef,
-} from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AddNewAccountComponent } from './components/add-new-account/add-new-account.component';
 import { ListComponent } from '../users-list/list/list.component';
 import { AccountListComponent } from './components/accounts-list/accounts-list.component';
 import { AccountsService } from './services/accounts.service';
 import { selectAccounts } from '../../../../state/users/user.selectors';
+import { FallbackImageDirective } from '../../../../shared/directives/fallback-image.directive';
 
 @Component({
   selector: 'app-user-details',
   standalone: true,
-  imports: [CommonModule, MatDialogModule, AccountListComponent],
+  imports: [
+    CommonModule,
+    MatDialogModule,
+    AccountListComponent,
+    FallbackImageDirective,
+  ],
   templateUrl: './user-details.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -72,8 +70,10 @@ export class UserDetailsComponent {
     this.store.dispatch(loadAccounts());
   }
   removeUser() {
-    this.store.dispatch(removeUser({ id: this.userId() }));
-    this.router.navigate(['/users-list']);
+    if (confirm('do you want to delete user?')) {
+      this.store.dispatch(removeUser({ id: this.userId() }));
+      this.router.navigate(['/users-list']);
+    }
   }
   goToDetails(id: string) {
     this.router.navigate([`/edit/${id}`]);

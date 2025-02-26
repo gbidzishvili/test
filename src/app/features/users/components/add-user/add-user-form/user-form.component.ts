@@ -19,10 +19,16 @@ import { v4 as uuidv4 } from 'uuid';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../../../models/user.model';
 import { CustomValidatorsService } from './custom-validators.service';
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-user-form',
   standalone: true,
-  imports: [ReactiveFormsModule, CustomUploaderComponent, AddressFormComponent],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    CustomUploaderComponent,
+    AddressFormComponent,
+  ],
   templateUrl: './user-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -46,7 +52,14 @@ export class UserFormComponent {
       lastname: ['', this.customValidators.getNameSurnameValidators()],
       gender: ['', [Validators.required]],
       personalNumber: ['', this.customValidators.getPersonalNumberValidators()],
-      mobileNumber: ['', [Validators.required, Validators.maxLength(9)]],
+      mobileNumber: [
+        '',
+        [
+          Validators.pattern(/^5\d{8}$/),
+          Validators.required,
+          Validators.maxLength(9),
+        ],
+      ],
       image: [
         {
           value: '',
@@ -100,26 +113,27 @@ export class UserFormComponent {
   }
 
   onSubmit() {
-    if (this.isEditMode() && this.userId()) {
-      const updatedUser = {
-        id: this.userId(),
-        ...this.userForm.value,
-      };
-      this.store.dispatch(
-        updateUser({ id: this.userId(), updatedUser: updatedUser })
-      );
+    if (this.userForm.valid) {
+      if (this.isEditMode() && this.userId()) {
+        const updatedUser = {
+          ...this.userForm.value,
+        };
+        this.store.dispatch(
+          updateUser({ id: this.userId(), updatedUser: updatedUser })
+        );
+      } else {
+        const userId = uuidv4();
+        const user = {
+          id: userId,
+          ...this.userForm.value,
+          firstname: this.userForm.value.firstname.toUpperCase(),
+          lastname: this.userForm.value.lastname.toUpperCase(),
+        };
+        this.store.dispatch(addUser({ user }));
+        this.resetForm();
+      }
     } else {
-      const userId = uuidv4();
-      console.log('formVAlue:,', this.userForm.value.firstname);
-      const user = {
-        id: userId,
-        ...this.userForm.value,
-        firstname: this.userForm.value.firstname.toUpperCase(),
-        lastname: this.userForm.value.lastname.toUpperCase(),
-      };
-      console.log(user);
-      this.store.dispatch(addUser({ user }));
-      this.resetForm();
+      alert('Error happened, Enter valid credentials');
     }
   }
   resetForm() {

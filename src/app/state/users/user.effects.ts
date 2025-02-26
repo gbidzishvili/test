@@ -8,6 +8,8 @@ import {
   addAccountFailure,
   addAccountSuccess,
   addUser,
+  addUserFailure,
+  addUserSuccess,
   loadAccounts,
   loadAccountsFailure,
   loadAccountsSuccess,
@@ -18,6 +20,8 @@ import {
   removeAccountFailure,
   removeAccountSuccess,
   removeUser,
+  removeUserFailure,
+  removeUserSuccess,
   updateUser,
   updateUserFailure,
   updateUserSuccess,
@@ -33,13 +37,16 @@ export class UserEffects {
   store = inject(Store<AppState>);
   usersService = inject(UsersService);
   accountService = inject(AccountsService);
-  addUser$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(addUser),
-        switchMap(({ user }) => this.usersService.addUser(user))
-      ),
-    { dispatch: false }
+  addUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(addUser),
+      switchMap(({ user }) =>
+        this.usersService.addUser(user).pipe(
+          map(() => addUserSuccess({ user })),
+          catchError((error) => of(addUserFailure({ error })))
+        )
+      )
+    )
   );
   addAccount$ = createEffect(() =>
     this.actions$.pipe(
@@ -52,20 +59,16 @@ export class UserEffects {
       )
     )
   );
-  removeUser$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(removeUser),
-        switchMap(({ id }) =>
-          this.usersService.removeUser(id).pipe(
-            catchError((error) => {
-              console.error('Error removing user:', error);
-              return of({ type: '[User] Remove User Failure', error });
-            })
-          )
+  removeUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(removeUser),
+      switchMap(({ id }) =>
+        this.usersService.removeUser(id).pipe(
+          map(() => removeUserSuccess({ id })),
+          catchError((error) => of(removeUserFailure({ error })))
         )
-      ),
-    { dispatch: false } // Do not dispatch any action after removal
+      )
+    )
   );
   removeAccount$ = createEffect(() =>
     this.actions$.pipe(
