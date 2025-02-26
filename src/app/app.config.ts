@@ -20,7 +20,7 @@ import { UserEffects } from './state/users/user.effects';
 // import { paginationReducer } from './state/users/reducers/pagination.reducers';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { reducers } from './state/reducers.index';
-import { PaginationEffects } from './state/pagination/paginaiton.effects';
+import { FilterEffects } from './state/filter/filter.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -31,7 +31,7 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     provideStore(reducers),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
-    provideEffects([UserEffects, PaginationEffects]),
+    provideEffects([UserEffects, FilterEffects]),
     provideHttpClient(withFetch()),
   ],
 };

@@ -6,35 +6,15 @@ import { UsersService } from '../../features/users/services/users.service';
 import {
   addUser,
   loadUsers,
-  loadUsersBypage,
   loadUsersFailure,
   loadUsersSuccess,
   removeUser,
   updateUser,
-  filterUsers,
-  filterUsersSuccess,
-  filterUsersFailure,
-  sortUsers,
-  sortUsersSuccess,
-  sortUsersFailure,
   updateUserFailure,
   updateUserSuccess,
 } from './user.action';
-import {
-  catchError,
-  concatMap,
-  debounceTime,
-  delay,
-  distinctUntilChanged,
-  from,
-  map,
-  mergeMap,
-  of,
-  switchMap,
-  tap,
-} from 'rxjs';
+import { catchError, map, mergeMap, of, switchMap } from 'rxjs';
 import { User } from '../../features/users/models/user.model';
-import { updateUsersTotalCount } from '../pagination/pagination.actions';
 
 @Injectable()
 export class UserEffects {
@@ -82,40 +62,6 @@ export class UserEffects {
         this.usersService.loadAllUsers().pipe(
           map((users: User[]) => loadUsersSuccess({ users })),
           catchError((error) => of(loadUsersFailure({ error })))
-        )
-      )
-    )
-  );
-
-  filterUsers$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(filterUsers),
-      debounceTime(500), // Wait for 500ms after the last action
-      distinctUntilChanged(),
-      switchMap(({ filterByValue }) =>
-        this.usersService.filterUsers(filterByValue).pipe(
-          map((filteredUsers: User[]) =>
-            filterUsersSuccess({ filteredUsers: filteredUsers })
-          ),
-          catchError((error) =>
-            of(filterUsersFailure({ error: error.message }))
-          )
-        )
-      )
-    )
-  );
-  sortUsers$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(sortUsers),
-      switchMap(({ sortLabel }) =>
-        this.usersService.sortUsers(sortLabel).pipe(
-          map(
-            (sortedUsers: User[]) =>
-              sortUsersSuccess({ sortedUsers: sortedUsers }) // Dispatch success action
-          ),
-          catchError(
-            (error) => of(sortUsersFailure({ error: error.message })) // Dispatch failure action
-          )
         )
       )
     )

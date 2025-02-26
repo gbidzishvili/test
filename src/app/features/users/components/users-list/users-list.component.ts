@@ -55,7 +55,7 @@ export class UsersListComponent {
       relativeTo: this.route,
       queryParams: { firstname_like: filterValue },
       queryParamsHandling: 'merge',
-      replaceUrl: true, // Preserve other query parameters
+      replaceUrl: true,
     });
   }
 

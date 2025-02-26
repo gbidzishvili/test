@@ -5,9 +5,9 @@
 // }
 
 import * as fromUser from './users/user.reducer';
-import * as fromPagination from './pagination/pagination.reducers';
+import * as fromPagination from './filter/filter.reducers';
 
 export interface AppState {
   user: fromUser.State;
-  pagination: fromPagination.State;
+  filter: fromPagination.State;
 }

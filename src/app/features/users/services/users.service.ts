@@ -7,8 +7,10 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { Store } from '@ngrx/store';
 import {
   selectCurrentPage,
+  selectFilterValue,
   selectPageSize,
-} from '../../../state/pagination/pagination.selectors';
+  selectSortValue,
+} from '../../../state/filter/filter.selectors';
 
 @Injectable({
   providedIn: 'root',
@@ -19,6 +21,8 @@ export class UsersService {
   private store = inject(Store);
   private pageSize = toSignal(this.store.select(selectPageSize));
   private currentPage = toSignal(this.store.select(selectCurrentPage));
+  sortBy = toSignal(this.store.select(selectSortValue));
+  filter = toSignal(this.store.select(selectFilterValue));
   constructor(private http: HttpClient) {}
   addUser(user: User): Observable<User> {
     return this.http.post<User>(this.apiUrl, user);
@@ -33,15 +37,10 @@ export class UsersService {
   loadUsersByPage() {
     let params = new HttpParams()
       .set('_page', `${this.currentPage() + 1}`)
-      .set('_limit', this.pageSize());
-
-    // if (sortBy) {
-    //   params = params.set('_sort', sortBy);
-    // }
-    // if (filter) {
-    //   params = params.set('firstname_like', filter);
-    // }
-    console.log('params inservice:', this.currentPage(), this.pageSize());
+      .set('_limit', this.pageSize())
+      .set('_sort', this.sortBy())
+      .set('firstname_like', this.filter());
+    console.log('sortBy', this.sortBy(), this.filter());
     return this.http.get(`http://localhost:3000/users`, {
       params,
       observe: 'response',

@@ -1,6 +1,13 @@
 import { createAction, props } from '@ngrx/store';
 
-// pagination
+export const updateFilter = createAction(
+  '[Users List Page] Update Users Filter Value',
+  props<{ filterBy: string }>()
+);
+export const updateSort = createAction(
+  '[Users List Page] Update Users Sort Value',
+  props<{ sortBy: string }>()
+);
 export const updateUsersTotalCount = createAction(
   '[Users List Page] Update Users Total Count',
   props<{ totalCount: number }>()

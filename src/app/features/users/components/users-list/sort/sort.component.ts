@@ -46,7 +46,7 @@ export class SortComponent {
       relativeTo: this.route,
       queryParams: { _sort: label },
       queryParamsHandling: 'merge',
-      replaceUrl: true, // Preserve other query parameters
+      replaceUrl: true,
     });
   }
   closeSortMenu() {

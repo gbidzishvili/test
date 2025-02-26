@@ -21,11 +21,11 @@ import {
   selectCurrentPage,
   selectPageSize,
   selectUsersCount,
-} from '../../../../../state/pagination/pagination.selectors';
+} from '../../../../../state/filter/filter.selectors';
 import {
   updateCurrentPage,
   updatePageSize,
-} from '../../../../../state/pagination/pagination.actions';
+} from '../../../../../state/filter/filter.actions';
 
 @Component({
   selector: 'app-pagination',
@@ -55,7 +55,7 @@ export class PaginationComponent {
       relativeTo: this.route,
       queryParams: { _page: this.currentPage(), _limit: this.pageSize() },
       queryParamsHandling: 'merge',
-      replaceUrl: true, // Preserve other query parameters
+      replaceUrl: true,
     });
   }
   dispatchLoadUsersByPage() {
