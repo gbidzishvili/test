@@ -1,12 +1,16 @@
 import { createReducer, on } from '@ngrx/store';
 import { User } from '../../features/users/models/user.model';
 import {
+  addAccountSuccess,
   addUser,
   filterUsersFailure,
   filterUsersSuccess,
+  loadAccountsFailure,
+  loadAccountsSuccess,
   loadUsers,
   loadUsersFailure,
   loadUsersSuccess,
+  removeAccountSuccess,
   removeUser,
   sortUsersFailure,
   sortUsersSuccess,
@@ -40,6 +44,14 @@ export const reducer = createReducer(
     ...state,
     users: state.users.filter((user: User) => user.id !== id),
   })),
+  on(removeAccountSuccess, (state, { id }) => {
+    console.log('Removing account with id:', id);
+    return {
+      ...state,
+      accounts: state.accounts.filter((account: Account) => account.id !== id),
+    };
+  }),
+
   on(updateUser, (state) => ({
     ...state,
     status: StatusEnum.Loading,
@@ -58,6 +70,7 @@ export const reducer = createReducer(
     status: StatusEnum.Error,
   })),
   on(loadUsers, (state) => ({ ...state, status: StatusEnum.Loading })),
+  ////////////
   on(loadUsersSuccess, (state, { users }) => {
     return {
       ...state,
@@ -66,9 +79,17 @@ export const reducer = createReducer(
       status: StatusEnum.Success,
     };
   }),
-  // /////////////////////////////////////////
+  on(addAccountSuccess, (state, { account }) => {
+    return {
+      ...state,
+      accounts: [...state.accounts, account],
+      error: null,
+      status: StatusEnum.Success,
+    };
+  }),
 
   on(loadUsersFailure, (state, { error }) => ({ ...state, error: error })),
+  on(loadAccountsFailure, (state, { error }) => ({ ...state, error: error })),
 
   // filterUsers reducers
   on(filterUsers, (state) => ({

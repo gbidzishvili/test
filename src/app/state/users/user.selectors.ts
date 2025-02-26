@@ -8,6 +8,10 @@ export const selectAllUsers = createSelector(
   selectUser,
   (state: State) => state.users
 );
+export const selectAccounts = createSelector(
+  selectUser,
+  (state: State) => state.accounts
+);
 
 export const selectUsersLoaded = createSelector(
   selectUser,

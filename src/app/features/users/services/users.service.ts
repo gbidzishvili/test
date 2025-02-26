@@ -25,7 +25,7 @@ export class UsersService {
   filter = toSignal(this.store.select(selectFilterValue));
   constructor(private http: HttpClient) {}
   addUser(user: User): Observable<User> {
-    return this.http.post<User>(this.apiUrl, user);
+    return this.http.post<User>(this.apiUrl, JSON.stringify(user));
   }
   updateUser(id: string, user: User): Observable<User> {
     return this.http.put<User>(`${this.apiUrl}/${id}`, user);
@@ -41,7 +41,7 @@ export class UsersService {
       .set('_sort', this.sortBy())
       .set('firstname_like', this.filter());
     console.log('sortBy', this.sortBy(), this.filter());
-    return this.http.get(`http://localhost:3000/users`, {
+    return this.http.get(`${this.apiUrl}`, {
       params,
       observe: 'response',
       transferCache: {

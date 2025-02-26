@@ -82,6 +82,7 @@
         Update User
       </button>
       <button
+        (click)="removeUser()"
         class="flex items-center justify-center px-6 py-3 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
       >
         Remove User
@@ -90,21 +91,16 @@
     <article class="p-8">
       <div class="flex justify-between items-center p-4">
         <div class="text-2xl font-semibold">Accounts</div>
-        <button class="bg-green-400 p-2 rounded-sm text-white font-semibold">
+        <button
+          (click)="openDialog()"
+          class="cursor-pointer bg-green-400 p-2 rounded-sm text-white font-semibold"
+        >
           +Add Account
         </button>
       </div>
       <app-account-list
         [cols]="['acId', 'clId', 'type', 'currency', 'status', 'action']"
-        [data]="[
-          {
-            id: '3',
-            userid: '3',
-            type: 'current',
-            currency: 'GEL',
-            status: 'active'
-          }
-        ]"
+        [data]="accounts()"
       ></app-account-list>
     </article>
   </div>

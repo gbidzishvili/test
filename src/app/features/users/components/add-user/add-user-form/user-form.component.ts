@@ -18,6 +18,7 @@ import { UsersService } from '../../../services/users.service';
 import { v4 as uuidv4 } from 'uuid';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../../../models/user.model';
+import { CustomValidatorsService } from './custom-validators.service';
 @Component({
   selector: 'app-user-form',
   standalone: true,
@@ -34,7 +35,7 @@ export class UserFormComponent {
   activatedRouter = inject(ActivatedRoute);
   isEditMode = signal<boolean>(false);
   userId = signal<string>('');
-
+  customValidators = inject(CustomValidatorsService);
   ngOnInit(): void {
     this.initForm();
     this.checkForEditMode();
@@ -86,11 +87,34 @@ export class UserFormComponent {
   }
   initForm() {
     this.userForm = this.fb.group({
-      firstname: ['', [Validators.required]],
-      lastname: ['', [Validators.required]],
+      firstname: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(50),
+          Validators.pattern(/^(?:[ა-ჰ]+|[a-zA-Z]+)$/),
+        ],
+      ],
+      lastname: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(50),
+          Validators.pattern(/^(?:[ა-ჰ]+|[a-zA-Z]+)$/),
+        ],
+      ],
       gender: ['', [Validators.required]],
-      personalNumber: ['', [Validators.required, Validators.maxLength(11)]],
-      mobileNumber: ['', [Validators.required]],
+      personalNumber: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(11),
+          Validators.maxLength(11),
+        ],
+      ],
+      mobileNumber: ['', [Validators.required, Validators.maxLength(9)]],
       image: [
         {
           value: '',
@@ -105,22 +129,23 @@ export class UserFormComponent {
       const updatedUser = {
         id: this.userId(),
         ...this.userForm.value,
-        firstname: this.userForm.value.firstname.toUpperCase(),
-        lastname: this.userForm.value.lastname.toUpperCase(),
       };
       this.store.dispatch(
         updateUser({ id: this.userId(), updatedUser: updatedUser })
       );
     } else {
+      // this.addChildControlsDynamically();
       const userId = uuidv4();
+      console.log('formVAlue:,', this.userForm.value.firstname);
       const user = {
         id: userId,
         ...this.userForm.value,
         firstname: this.userForm.value.firstname.toUpperCase(),
         lastname: this.userForm.value.lastname.toUpperCase(),
-        country: this.userForm.value.country.toUpperCase(),
-        city: this.userForm.value.city.toUpperCase(),
+        // country: this.userForm?.value?.country?.toUpperCase(),
+        // city: this.userForm?.value?.city?.toUpperCase(),
       };
+      console.log(user);
       this.store.dispatch(addUser({ user }));
       this.resetForm();
     }
