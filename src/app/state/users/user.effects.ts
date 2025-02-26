@@ -86,24 +86,6 @@ export class UserEffects {
       )
     )
   );
-  loadUsersByPage$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(loadUsersBypage),
-      mergeMap(() =>
-        this.usersService.loadUsersByPage().pipe(
-          concatMap((response: any) => {
-            const totalCount = +response.headers.get('X-Total-Count');
-            const users = response.body;
-            return [
-              loadUsersSuccess({ users }),
-              updateUsersTotalCount({ totalCount }),
-            ];
-          }),
-          catchError((error) => of(loadUsersFailure({ error: error.message })))
-        )
-      )
-    )
-  );
 
   filterUsers$ = createEffect(() =>
     this.actions$.pipe(

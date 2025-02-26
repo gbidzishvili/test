@@ -17,25 +17,3 @@ export const selectPageSize = createSelector(
   selectPagination,
   (pagination) => pagination.pageSize
 );
-// export const selectAllUsers = createSelector(
-//   selectUser,
-//   (state: State) => state.users
-// );
-
-// export const selectUsersLoaded = createSelector(
-//   selectUser,
-//   (usersState) => usersState.status === 'success' && usersState.users.length > 0
-// );
-// export const selectPagination = createSelector(
-//   selectPagination,
-//   (state) => state.pagination
-// );
-// export const selectCurrentPage = (state: AppState) => {
-//   return state.user.pagination.currentPage;
-// };
-// export const selectUsersCount = (state: AppState) => {
-//   return state.user.pagination.totalCount;
-// };
-// export const selectPageSize = (state: AppState) => {
-//   return state.user.pagination.pageSize;
-// };
