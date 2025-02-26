@@ -20,6 +20,7 @@ import { PaginationComponent } from './pagination/pagination.component';
 import { SortComponent } from './sort/sort.component';
 import { ListComponent } from './list/list.component';
 import { filterUsers } from '../../../../state/filter/filter.actions';
+import { SearchComponent } from './search/search.component';
 @Component({
   selector: 'app-users-list',
   standalone: true,
@@ -29,6 +30,7 @@ import { filterUsers } from '../../../../state/filter/filter.actions';
     PaginationComponent,
     SortComponent,
     ListComponent,
+    SearchComponent,
   ],
   templateUrl: './users-list.component.html',
   providers: [{ provide: MatPaginatorIntl, useClass: PaginatorIntlService }],
@@ -45,7 +47,9 @@ export class UsersListComponent {
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    // Read the query parameter 'firstname_like' if it exists and update the filterValue
+    this.updateSearchValue();
+  }
+  updateSearchValue() {
     this.route.queryParams.subscribe((params) => {
       const searchValue = params['firstname_like'];
       if (searchValue) {
