@@ -36,14 +36,23 @@ import { filterUsers } from '../../../../state/filter/filter.actions';
 })
 export class UsersListComponent {
   usersLoaded = input<string>('');
-
   store = inject(Store);
   usersService = inject(UsersService);
   public router = inject(Router);
   users = toSignal(this.store.select(selectAllUsers));
+  filterValue = signal<string>(''); // This will hold the value of the input
+
   constructor(private route: ActivatedRoute) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // Read the query parameter 'firstname_like' if it exists and update the filterValue
+    this.route.queryParams.subscribe((params) => {
+      const searchValue = params['firstname_like'];
+      if (searchValue) {
+        this.filterValue.set(searchValue);
+      }
+    });
+  }
   updatefilterValue(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.addqueryParams(filterValue);
