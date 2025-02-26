@@ -16,8 +16,10 @@ import { provideStore } from '@ngrx/store';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { provideEffects } from '@ngrx/effects';
 import { UserEffects } from './state/users/user.effects';
-import { userReducer } from './state/users/user.reducer';
+// import { userReducer } from './state/users/reducers/user.reducer';
+// import { paginationReducer } from './state/users/reducers/pagination.reducers';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
+import { reducers } from './state/reducers.index';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -26,7 +28,7 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
     provideClientHydration(),
     provideAnimationsAsync(),
-    provideStore({ user: userReducer }),
+    provideStore(reducers),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
     provideEffects([UserEffects]),
     provideHttpClient(withFetch()),

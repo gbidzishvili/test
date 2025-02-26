@@ -14,13 +14,18 @@ import {
 import { PaginatorIntlService } from './paginator-intl.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Store } from '@ngrx/store';
-import { selectUsersCount } from '../../../../../state/users/user.selectors';
-import {
-  loadUsersBypage,
-  loadUsersSuccess,
-} from '../../../../../state/users/user.action';
-import { ActivatedRoute } from '@angular/router';
+import { loadUsersBypage } from '../../../../../state/users/user.action';
+import { ActivatedRoute, Router } from '@angular/router';
 import { tap } from 'rxjs';
+import {
+  selectCurrentPage,
+  selectPageSize,
+  selectUsersCount,
+} from '../../../../../state/pagination/pagination.selectors';
+import {
+  updateCurrentPage,
+  updatePageSize,
+} from '../../../../../state/pagination/pagination.actions';
 
 @Component({
   selector: 'app-pagination',
@@ -30,18 +35,27 @@ import { tap } from 'rxjs';
   providers: [{ provide: MatPaginatorIntl, useClass: PaginatorIntlService }],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PaginationComponent implements OnInit {
+export class PaginationComponent {
   store = inject(Store);
-  currentPage = signal(0);
-  pageSize = signal(10);
+  currentPage = toSignal(this.store.select(selectCurrentPage));
+  pageSize = toSignal(this.store.select(selectPageSize));
   userslength = toSignal(this.store.select(selectUsersCount));
-  activatedRoute = inject(ActivatedRoute);
-
-  ngOnInit(): void {}
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
   handlePage(pageEvent: PageEvent) {
-    this.currentPage.set(pageEvent.pageIndex);
-    this.pageSize.set(pageEvent.pageSize);
+    this.store.dispatch(
+      updateCurrentPage({ currentPage: pageEvent.pageIndex })
+    );
+    this.store.dispatch(updatePageSize({ pageSize: pageEvent.pageSize }));
+    this.addqueryParams();
     this.dispatchLoadUsersByPage();
+  }
+  addqueryParams() {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { _page: this.currentPage(), _limit: this.pageSize() },
+      queryParamsHandling: 'merge', // Preserve other query parameters
+    });
   }
   dispatchLoadUsersByPage() {
     this.store.dispatch(

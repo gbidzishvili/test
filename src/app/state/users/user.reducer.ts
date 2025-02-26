@@ -17,34 +17,19 @@ import {
   updateUserFailure,
   updateUserSuccess,
 } from './user.action';
-import { selectUsers } from './user.selectors';
 import { StatusEnum } from '../enums/status.enums';
 
-export interface UserState {
+export interface State {
   users: User[];
-  totalCount: number;
-  pageSize: number;
   error: string | null;
   status: StatusEnum;
-  pagination: {
-    totalCount: number;
-    pageSize: number;
-    currentPage: number;
-  };
 }
-export const initialState: UserState = {
+export const initialState: State = {
   users: [],
-  totalCount: 0,
-  pageSize: 10,
   error: null,
   status: StatusEnum.Pending,
-  pagination: {
-    totalCount: 0,
-    pageSize: 10,
-    currentPage: 1,
-  },
 };
-export const userReducer = createReducer(
+export const reducer = createReducer(
   initialState,
   on(addUser, (state, { user }) => ({
     ...state,
@@ -72,29 +57,17 @@ export const userReducer = createReducer(
     status: StatusEnum.Error,
   })),
   on(loadUsers, (state) => ({ ...state, status: StatusEnum.Loading })),
-  // on(updateTotalCount)
-  on(loadUsersSuccess, (state, { users, count = 0 }) => {
+  on(loadUsersSuccess, (state, { users }) => {
     return {
       ...state,
       users: users,
       error: null,
       status: StatusEnum.Success,
-      pagination: {
-        // Properly update nested pagination
-        ...state.pagination,
-        totalCount: count,
-      },
     };
   }),
-  on(loadUsersFailure, (state, { error }) => ({ ...state, error: error })),
+  // /////////////////////////////////////////
 
-  on(loadUsersBypage, (state, { pageSize }) => ({
-    ...state,
-    pagination: {
-      ...state.pagination,
-      pageSize: pageSize,
-    },
-  })),
+  on(loadUsersFailure, (state, { error }) => ({ ...state, error: error })),
 
   // filterUsers reducers
   on(filterUsers, (state) => ({

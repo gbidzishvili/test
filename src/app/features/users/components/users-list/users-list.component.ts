@@ -44,13 +44,19 @@ export class UsersListComponent {
   users = toSignal(this.store.select(selectAllUsers));
   constructor(private route: ActivatedRoute) {}
 
-  ngOnInit(): void {
-    const resolvedData = this.route.snapshot.data['usersLoaded'];
-    console.log('Are users loaded?', resolvedData); // Will log `true`
-  }
+  ngOnInit(): void {}
   updatefilterValue(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
+    this.addqueryParams(filterValue);
     this.store.dispatch(filterUsers({ filterByValue: filterValue }));
+  }
+  addqueryParams(filterValue) {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { firstname_like: filterValue },
+      queryParamsHandling: 'merge',
+      replaceUrl: true, // Preserve other query parameters
+    });
   }
 
   goToDetails(id: string) {

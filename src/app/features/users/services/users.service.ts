@@ -1,11 +1,14 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { User } from '../models/user.model';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { selectPageSize } from '../../../state/users/user.selectors';
 import { Store } from '@ngrx/store';
+import {
+  selectCurrentPage,
+  selectPageSize,
+} from '../../../state/pagination/pagination.selectors';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +18,7 @@ export class UsersService {
   private apiUrl = `${this.baseUrl}/users`;
   private store = inject(Store);
   private pageSize = toSignal(this.store.select(selectPageSize));
+  private currentPage = toSignal(this.store.select(selectCurrentPage));
   constructor(private http: HttpClient) {}
   addUser(user: User): Observable<User> {
     return this.http.post<User>(this.apiUrl, user);
@@ -25,12 +29,21 @@ export class UsersService {
   loadAllUsers(): Observable<User[]> {
     return this.http.get<User[]>(this.apiUrl);
   }
-  loadUsersByPage(currentPage: number, pageSize: number) {
+
+  loadUsersByPage() {
+    let params = new HttpParams()
+      .set('_page', `${this.currentPage() + 1}`)
+      .set('_limit', this.pageSize());
+
+    // if (sortBy) {
+    //   params = params.set('_sort', sortBy);
+    // }
+    // if (filter) {
+    //   params = params.set('firstname_like', filter);
+    // }
+    console.log('params inservice:', this.currentPage(), this.pageSize());
     return this.http.get(`http://localhost:3000/users`, {
-      params: {
-        _page: `${currentPage + 1}`,
-        _limit: `${pageSize}`,
-      },
+      params,
       observe: 'response',
       transferCache: {
         includeHeaders: ['X-Total-Count'],
@@ -44,7 +57,11 @@ export class UsersService {
   }
   sortUsers(label: string) {
     return this.http.get<User[]>(`${this.apiUrl}`, {
-      params: { _sort: label, _limit: this.pageSize() },
+      params: {
+        _sort: label,
+        _page: this.currentPage() + 1,
+        _limit: this.pageSize(),
+      },
     });
   }
   removeUser(id: string): Observable<string> {

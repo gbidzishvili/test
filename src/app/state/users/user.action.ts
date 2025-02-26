@@ -24,7 +24,7 @@ export const removeUser = createAction(
 );
 
 export const loadUsers = createAction('[User Dashboard Page] Load Users');
-
+///////////////////////////////////////
 export const loadUsersBypage = createAction(
   '[Users List Page] Load Users By Page',
   props<{ currentPage: number; pageSize: number }>()
@@ -32,7 +32,7 @@ export const loadUsersBypage = createAction(
 
 export const loadUsersSuccess = createAction(
   '[Users API] User Load Success',
-  props<{ users: User[]; count?: number }>()
+  props<{ users: User[] }>()
 );
 export const loadUsersFailure = createAction(
   '[Users API] User Load Failure',
@@ -51,11 +51,7 @@ export const sortUsersFailure = createAction(
   '[Users] Sort Users Failure',
   props<{ error: string }>()
 );
-// pagination
-export const updateUsersTotalCount = createAction(
-  '[Users List Page] Update Users Total Count',
-  props<{ totalCount: number }>()
-);
+
 // Filter Actions
 export const filterUsers = createAction(
   '[Users List Page] Filter Users',

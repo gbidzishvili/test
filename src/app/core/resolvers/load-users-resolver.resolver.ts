@@ -21,11 +21,32 @@ import {
   loadUsersSuccess,
 } from '../../state/users/user.action';
 import { UsersService } from '../../features/users/services/users.service';
+import { toSignal } from '@angular/core/rxjs-interop';
+import {
+  selectCurrentPage,
+  selectPageSize,
+} from '../../state/pagination/pagination.selectors';
+import {
+  updateCurrentPage,
+  updatePageSize,
+  updateUsersTotalCount,
+} from '../../state/pagination/pagination.actions';
 
-export const loadUsersResolver: ResolveFn<any> = () => {
+export const loadUsersResolver: ResolveFn<any> = (route, state) => {
   const usersService = inject(UsersService);
   const store = inject(Store);
-  return usersService.loadUsersByPage(0, 6).pipe(
+  // const currentPage = toSignal(store.select(selectCurrentPage));
+  // const pageSize = toSignal(store.select(selectPageSize));
+  let currentPage = route.queryParams['_page'];
+  if (currentPage)
+    store.dispatch(updateCurrentPage({ currentPage: Number(currentPage) }));
+  let pageSize = route.queryParams['_limit'];
+  if (pageSize) store.dispatch(updatePageSize({ pageSize: Number(pageSize) }));
+  let filter = route.queryParams['firstname_like'];
+  let sort = route.queryParams['_sort'];
+  // console.log('currentPage', currentPage, pageSize, sort, filter);
+
+  return usersService.loadUsersByPage().pipe(
     tap((response: any) => {
       const users = response.body;
       const totalCount = response['headers'].get('X-Total-Count');
@@ -33,9 +54,9 @@ export const loadUsersResolver: ResolveFn<any> = () => {
         store.dispatch(
           loadUsersSuccess({
             users: users,
-            count: totalCount,
           })
         );
+        store.dispatch(updateUsersTotalCount({ totalCount }));
       }
     })
   );

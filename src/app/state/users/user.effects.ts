@@ -22,6 +22,7 @@ import {
 } from './user.action';
 import {
   catchError,
+  concatMap,
   debounceTime,
   delay,
   distinctUntilChanged,
@@ -33,6 +34,7 @@ import {
   tap,
 } from 'rxjs';
 import { User } from '../../features/users/models/user.model';
+import { updateUsersTotalCount } from '../pagination/pagination.actions';
 
 @Injectable()
 export class UserEffects {
@@ -87,20 +89,22 @@ export class UserEffects {
   loadUsersByPage$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadUsersBypage),
-      mergeMap(({ currentPage, pageSize }) =>
-        this.usersService.loadUsersByPage(currentPage, pageSize).pipe(
-          map((response: any) => {
-            const totalCount = response.headers.get('X-Total-Count');
-            return loadUsersSuccess({
-              users: response.body,
-              count: totalCount,
-            });
+      mergeMap(() =>
+        this.usersService.loadUsersByPage().pipe(
+          concatMap((response: any) => {
+            const totalCount = +response.headers.get('X-Total-Count');
+            const users = response.body;
+            return [
+              loadUsersSuccess({ users }),
+              updateUsersTotalCount({ totalCount }),
+            ];
           }),
           catchError((error) => of(loadUsersFailure({ error: error.message })))
         )
       )
     )
   );
+
   filterUsers$ = createEffect(() =>
     this.actions$.pipe(
       ofType(filterUsers),

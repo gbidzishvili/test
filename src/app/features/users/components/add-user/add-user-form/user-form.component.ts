@@ -118,6 +118,8 @@ export class UserFormComponent {
         ...this.userForm.value,
         firstname: this.userForm.value.firstname.toUpperCase(),
         lastname: this.userForm.value.lastname.toUpperCase(),
+        country: this.userForm.value.country.toUpperCase(),
+        city: this.userForm.value.city.toUpperCase(),
       };
       this.store.dispatch(addUser({ user }));
       this.resetForm();
