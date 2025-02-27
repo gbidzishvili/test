@@ -3,7 +3,11 @@ import { Observable } from 'rxjs';
 import { CacheRequestService } from './cache-request.service';
 import { User } from '../../features/users/models/user.model';
 import { Store } from '@ngrx/store';
-import { loadAccounts, removeUser } from '../../state/users/user.action';
+import {
+  addAccount,
+  loadAccounts,
+  removeUser,
+} from '../../state/users/user.action';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { AddNewAccountComponent } from '../../features/users/components/user-details/components/add-new-account/add-new-account.component';
@@ -12,6 +16,8 @@ import { HttpClient } from '@angular/common/http';
 import { Filters } from '../../features/users/models/filter.model';
 import { environment } from '../../environments/environment';
 import { SortService } from '../../features/users/components/users-list/sort/sort.service';
+import { SearchService } from '../../features/users/components/users-list/search/search.service';
+import { Account } from '../../features/users/models/account.model';
 
 @Injectable({
   providedIn: 'root',
@@ -22,6 +28,7 @@ export class FacadeUsersService {
   router = inject(Router);
   dialog = inject(MatDialog);
   http = inject(HttpClient);
+  searchService = inject(SearchService);
   sortUsersService = inject(SortService);
   private apiUrl = environment.apiUrl;
 
@@ -61,5 +68,18 @@ export class FacadeUsersService {
   }
   sortUsers(label: string) {
     this.sortUsersService.sortUsers(label);
+  }
+  updateSearchValue() {
+    this.searchService.updateSearchValue();
+  }
+  updatefilterValue(event: Event) {
+    this.searchService.updatefilterValue(event);
+  }
+  addAccount(account: Account) {
+    this.store.dispatch(
+      addAccount({
+        account: account,
+      })
+    );
   }
 }

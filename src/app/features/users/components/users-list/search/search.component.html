@@ -17,7 +17,7 @@
   </svg>
 </div>
 <input
-  [value]="filterValue()"
+  [value]="facadeUserService.searchService.filterValue()"
   (input)="updatefilterValue($event)"
   type="text"
   id="table-search-users"

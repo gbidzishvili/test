@@ -18,7 +18,8 @@ export const loadUsersResolver: ResolveFn<any> = (route, state) => {
 
   const { _page, _limit, firstname_like, _sort } = route.queryParams;
 
-  if (_page) store.dispatch(updateCurrentPage({ currentPage: Number(_page) }));
+  if (_page)
+    store.dispatch(updateCurrentPage({ currentPage: Number(_page - 1) }));
   if (_limit) store.dispatch(updatePageSize({ pageSize: Number(_limit) }));
   if (firstname_like)
     store.dispatch(updateFilter({ filterBy: firstname_like }));

@@ -33,49 +33,38 @@
         class="min-w-48 absolute top-10 right-10 z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-sm shadow-sm dark:bg-gray-700 dark:divide-gray-600"
         [ngClass]="{ visible: isMenuOpen(), hidden: !isMenuOpen() }"
       >
-        <div class="px-4 py-3" role="none">
-          <p class="text-sm text-gray-900 dark:text-white" role="none">
-            Neil Sims
-          </p>
-          <p
-            class="text-sm font-medium text-gray-900 truncate dark:text-gray-300"
-            role="none"
-          >
-            Useremail.com
-          </p>
-        </div>
         <ul class="py-1" role="none">
           <li>
             <a
-              href="#"
-              class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+              routerLink="/users-list"
+              (click)="toggleUserMenu()"
+              class="font-bold underline block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
               role="menuitem"
-              >Dashboard</a
+              >Users List
+            </a>
+          </li>
+          <li>
+            <a
+              routerLink="/add-user"
+              (click)="toggleUserMenu()"
+              class="font-bold underline block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+              role="menuitem"
+              >Add New User</a
             >
           </li>
           <li>
             <a
-              href="#"
-              class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+              class="font-bold underline block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
               role="menuitem"
-              >Settings</a
+              >demo</a
             >
           </li>
           <li>
             <a
-              href="#"
-              class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+              class="font-bold underline block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
               role="menuitem"
-              >Earnings</a
-            >
-          </li>
-          <li>
-            <a
-              href="#"
-              class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-              role="menuitem"
-              >Sign out</a
-            >
+              >demo
+            </a>
           </li>
         </ul>
       </div>

@@ -2,14 +2,14 @@
 
 <div
   (click)="onClick()"
-  class="flex justify-center items-center w-48 h-48 border cursor-pointer mb-1 rounded-lg"
+  class="flex justify-center items-center w-48 h-48 border cursor-pointer mb-1 rounded-lg max-w-full"
 >
   <div
     class="flex flex-col justify-center items-center gap-3 max-w-[400px] text-[#5A5A5A] font-semibold text-c-normal leading-[21.76px] rounded-lg"
     style="width: 100%; background: #fff; height: 100%"
   >
     <img src="assets/images/account_image.svg" alt="file image" />
-    <div>Click to upload</div>
+    <div class="text-center">Click to upload</div>
   </div>
 </div>
 
@@ -17,9 +17,9 @@
 <div class="flex flex-wrap gap-2 relative border rounded-lg w-48 h-48">
   <img
     width="200px"
-    height="127px"
+    height="160px"
     [src]="imageUrl()"
-    class="rounded-lg w-full"
+    class="rounded-lg w-full h-full"
   />
 
   <div

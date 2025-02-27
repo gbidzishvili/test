@@ -77,7 +77,7 @@ export const loadUsersSuccess = createAction(
   props<{ users: User[] }>()
 );
 export const loadAccountsSuccess = createAction(
-  '[Users API] User Load Success',
+  '[Users API] User Accounts Success',
   props<{ accounts: Account[] }>()
 );
 

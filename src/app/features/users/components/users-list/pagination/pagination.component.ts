@@ -26,6 +26,8 @@ import {
   updateCurrentPage,
   updatePageSize,
 } from '../../../../../state/filter/filter.actions';
+import { PaginationService } from './pagination.service';
+import { FacadePaginationService } from '../../../../../core/services/facade-pagination.service';
 
 @Component({
   selector: 'app-pagination',
@@ -37,33 +39,20 @@ import {
 })
 export class PaginationComponent {
   store = inject(Store);
-  currentPage = toSignal(this.store.select(selectCurrentPage));
-  pageSize = toSignal(this.store.select(selectPageSize));
-  userslength = toSignal(this.store.select(selectUsersCount));
-  private router = inject(Router);
-  private route = inject(ActivatedRoute);
+  facadePaginationService = inject(FacadePaginationService);
+  currentPage = toSignal(this.facadePaginationService.getCurrentPage());
+  pageSize = toSignal(this.facadePaginationService.getPageSize());
+  userslength = toSignal(this.facadePaginationService.getUsersLength());
+  paginationService = inject(PaginationService);
   handlePage(pageEvent: PageEvent) {
     this.store.dispatch(
       updateCurrentPage({ currentPage: pageEvent.pageIndex })
     );
     this.store.dispatch(updatePageSize({ pageSize: pageEvent.pageSize }));
-    this.addqueryParams();
-    this.dispatchLoadUsersByPage();
-  }
-  addqueryParams() {
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: { _page: this.currentPage(), _limit: this.pageSize() },
-      queryParamsHandling: 'merge',
-      replaceUrl: true,
-    });
-  }
-  dispatchLoadUsersByPage() {
-    this.store.dispatch(
-      loadUsersBypage({
-        currentPage: this.currentPage(),
-        pageSize: this.pageSize(),
-      })
+    this.paginationService.addqueryParams(this.currentPage(), this.pageSize());
+    this.paginationService.dispatchLoadUsersByPage(
+      this.currentPage(),
+      this.pageSize()
     );
   }
 }

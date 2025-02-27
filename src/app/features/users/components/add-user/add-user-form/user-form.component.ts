@@ -2,6 +2,8 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
+  input,
+  Input,
   signal,
 } from '@angular/core';
 import { CustomUploaderComponent } from '../../../../../shared/components/custom-uploader/custom-uploader.component';
@@ -34,6 +36,7 @@ import { CacheRequestService } from '../../../../../core/services/cache-request.
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserFormComponent {
+  id = input<string>('');
   usersService = inject(UsersService);
   userForm!: FormGroup;
   customUploaderReset = signal<boolean>(false);
@@ -46,6 +49,7 @@ export class UserFormComponent {
   cacheRequestService = inject(CacheRequestService);
   customValidators = inject(CustomValidatorsService);
   ngOnInit(): void {
+    console.log('ididdsd:', this.id());
     this.initForm();
     this.checkForEditMode();
   }
@@ -55,34 +59,19 @@ export class UserFormComponent {
       lastname: ['', this.customValidators.getNameSurnameValidators()],
       gender: ['', []],
       personalNumber: ['', this.customValidators.getPersonalNumberValidators()],
-      mobileNumber: [
-        '',
-        [
-          Validators.pattern(/^5\d{8}$/),
-          Validators.required,
-          Validators.maxLength(9),
-        ],
-      ],
-      image: [
-        {
-          value: '',
-          disabled: false,
-        },
-      ],
+      mobileNumber: ['', this.customValidators.getMobileNumberValidator()],
+      image: [],
     });
   }
 
   checkForEditMode() {
-    this.activatedRouter.paramMap.subscribe((params) => {
-      const id = params.get('id');
-      if (id) {
-        this.isEditMode.set(true);
-        this.userId.set(id);
-        this.cacheRequestService.getUserById(id).subscribe((user) => {
-          this.patchFormValues(user);
-        });
-      }
-    });
+    if (this.id()) {
+      this.isEditMode.set(true);
+      this.userId.set(this.id());
+      this.cacheRequestService.getUserById(this.id()).subscribe((user) => {
+        this.patchFormValues(user);
+      });
+    }
   }
 
   patchFormValues(user: User) {

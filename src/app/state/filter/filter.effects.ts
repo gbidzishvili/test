@@ -43,6 +43,7 @@ export class FilterEffects {
           concatMap((response: any) => {
             const totalCount = +response.headers.get('X-Total-Count');
             const users = response.body;
+            console.log('users in loadUsersSuccess', users);
             return [
               loadUsersSuccess({ users }),
               updateUsersTotalCount({ totalCount }),

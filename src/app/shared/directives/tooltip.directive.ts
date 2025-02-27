@@ -20,8 +20,6 @@ import { TooltipComponent } from '../components/tooltip/tooltip.component';
 export class TooltipDirective implements OnDestroy {
   @Input() tooltipText: any = '';
   private tooltipComponent?: ComponentRef<any>;
-  private pressTimeout?: any;
-  private pressDuration = 300;
 
   @HostListener('mouseenter')
   onMouseEnter() {
@@ -40,16 +38,6 @@ export class TooltipDirective implements OnDestroy {
 
   @HostListener('mouseleave')
   onMouseLeave() {
-    this.destroyTooltip();
-  }
-
-  @HostListener('window:scroll')
-  onWindowScroll() {
-    this.destroyTooltip();
-  }
-
-  @HostListener('window:resize')
-  onWindowResize() {
     this.destroyTooltip();
   }
 

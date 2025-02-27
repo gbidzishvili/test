@@ -12,6 +12,8 @@ import { FallbackImageDirective } from '../../../../shared/directives/fallback-i
 import { FacadeUsersService } from '../../../../core/services/facade-users.service';
 import { FacadeAccountService } from '../../../../core/services/facade-account.service';
 import { AccountListComponent } from './components/accounts-list/accounts-list.component';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-user-details',
@@ -21,10 +23,12 @@ import { AccountListComponent } from './components/accounts-list/accounts-list.c
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserDetailsComponent {
+  apiUrl = environment.apiUrl;
+  http = inject(HttpClient);
   user = rxResource<User, { id: string }>({
     request: () => ({ id: this.userId() }),
     loader: ({ request }) => {
-      return this.facadeUserService.loadUserDetails(request.id);
+      return this.http.get<User>(`${this.apiUrl}/users/${request.id}`);
     },
   });
   @Input() set id(id: string) {
@@ -40,9 +44,10 @@ export class UserDetailsComponent {
     this.facadeUserService.openDialog();
   }
   ngOnInit() {
-    this.loadAccounts(this.userId());
+    this.loadData(this.userId());
   }
-  loadAccounts(id: string) {
+  loadData(id: string) {
+    this.facadeUserService.loadUserDetails(id);
     this.facadeUserService.loadAccounts(id);
   }
   removeUser() {

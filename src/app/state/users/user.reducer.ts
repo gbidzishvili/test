@@ -87,6 +87,7 @@ export const reducer = createReducer(
   }),
 
   on(updateUserSuccess, (state, { updatedUser }) => {
+    console.log('users in reducer', state);
     const validUpdatedUser =
       updatedUser && typeof updatedUser === 'object' ? updatedUser : null;
     return {
@@ -100,6 +101,7 @@ export const reducer = createReducer(
   }),
 
   on(loadUsersSuccess, (state, { users }) => {
+    console.log('loadUsersSuccess reducer', users);
     return {
       ...state,
       users: users,

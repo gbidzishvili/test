@@ -19,6 +19,7 @@ import { AccountsService } from '../../services/accounts.service';
 import { addAccount } from '../../../../../../state/users/user.action';
 import { User } from '../../../../models/user.model';
 import { Account } from '../../../../models/account.model';
+import { FacadeUsersService } from '../../../../../../core/services/facade-users.service';
 
 @Component({
   selector: 'app-add-new-account',
@@ -28,6 +29,7 @@ import { Account } from '../../../../models/account.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddNewAccountComponent {
+  facadeUsersService = inject(FacadeUsersService);
   accountForm!: FormGroup;
   fb = inject(FormBuilder);
   closeBtnClicked = output<void>();
@@ -52,21 +54,21 @@ export class AddNewAccountComponent {
     });
   }
   onSubmit() {
+    const account = this.getAccount();
+    if (this.accountForm.valid) {
+      this.addAccount(account);
+      this.closeDialog();
+    }
+  }
+  getAccount() {
     const accountId = uuidv4().slice(0, 7);
-    const account = {
+    return {
       id: accountId,
       clId: this.accountService.userId(),
       ...this.accountForm.value,
     };
-    if (this.accountForm.valid) this.addAccount(account);
-
-    this.closeDialog();
   }
   addAccount(account: Account) {
-    this.store.dispatch(
-      addAccount({
-        account: account,
-      })
-    );
+    this.facadeUsersService.addAccount(account);
   }
 }

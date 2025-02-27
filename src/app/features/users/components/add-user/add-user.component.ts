@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  signal,
+} from '@angular/core';
 import { UserFormComponent } from './add-user-form/user-form.component';
 
 @Component({
@@ -9,5 +14,9 @@ import { UserFormComponent } from './add-user-form/user-form.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddUserComponent {
-  @Input() id: string;
+  @Input() set id(id: string) {
+    this.userId.set(id);
+    console.log('idIsin addUser', this.userId());
+  }
+  userId = signal<string>('');
 }

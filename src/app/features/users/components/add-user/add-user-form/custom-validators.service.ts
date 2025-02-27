@@ -40,4 +40,11 @@ export class CustomValidatorsService {
       Validators.maxLength(11),
     ];
   }
+  getMobileNumberValidator() {
+    return [
+      Validators.pattern(/^5\d{8}$/),
+      Validators.required,
+      Validators.maxLength(9),
+    ];
+  }
 }
