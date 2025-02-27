@@ -1,0 +1,7 @@
+{
+  "errors": {
+    "unknownError": "გაუთვალისწინებელი შეცდომა მოხდა.",
+    "clientError": "კლიენტის მხარის შეცდომა: {{message}}",
+    "serverError": "სერვერის შეცდომა ({{code}}): {{message}}"
+  }
+}

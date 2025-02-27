@@ -1,25 +1,19 @@
 import { createReducer, on } from '@ngrx/store';
 import { User } from '../../features/users/models/user.model';
 import {
-  addAccountFailure,
   addAccountSuccess,
   addUser,
-  addUserFailure,
   addUserSuccess,
-  filterUsersFailure,
+  clearError,
   filterUsersSuccess,
-  loadAccountsFailure,
   loadAccountsSuccess,
   loadUsers,
-  loadUsersFailure,
   loadUsersSuccess,
   removeAccountSuccess,
   removeUser,
-  removeUserSuccess,
-  sortUsersFailure,
+  showError,
   sortUsersSuccess,
   updateUser,
-  updateUserFailure,
   updateUserSuccess,
 } from './user.action';
 import { StatusEnum } from '../enums/status.enums';
@@ -62,7 +56,6 @@ export const reducer = createReducer(
   })),
 
   on(addUserSuccess, (state, { user }) => {
-    alert('User Added Successfully');
     return {
       ...state,
       users: [...state.users, user],
@@ -130,24 +123,9 @@ export const reducer = createReducer(
     };
   }),
 
-  // onfailure
-  on(sortUsersFailure, (state, { error }) => ({
+  on(showError, (state, { error }) => ({
     ...state,
     error: error,
-    status: StatusEnum.Error,
   })),
-  on(filterUsersFailure, (state, { error }) => ({
-    ...state,
-    error: error,
-    status: StatusEnum.Error,
-  })),
-  on(addUserFailure, (state, { error }) => ({ ...state, error: error })),
-  on(updateUserFailure, (state, { error }) => ({
-    ...state,
-    error: error,
-    status: StatusEnum.Error,
-  })),
-  on(addAccountFailure, (state, { error }) => ({ ...state, error: error })),
-  on(loadUsersFailure, (state, { error }) => ({ ...state, error: error })),
-  on(loadAccountsFailure, (state, { error }) => ({ ...state, error: error }))
+  on(clearError, (state) => ({ ...state, error: null }))
 );

@@ -10,10 +10,7 @@ export const addUserSuccess = createAction(
   '[User API] add User Success',
   props<{ user: User }>()
 );
-export const addUserFailure = createAction(
-  '[Users API] Add User Failure',
-  props<{ error: any }>()
-);
+
 export const addAccount = createAction(
   '[User Details Page] Add Account',
   props<{ account: Account }>()
@@ -22,10 +19,7 @@ export const addAccountSuccess = createAction(
   '[User API] add Account Success',
   props<{ account: Account }>()
 );
-export const addAccountFailure = createAction(
-  '[Users API] Add Account Failure',
-  props<{ error: any }>()
-);
+
 export const removeAccount = createAction(
   '[Users API] Remove Account',
   props<{ id: string }>()
@@ -57,10 +51,6 @@ export const updateUserSuccess = createAction(
   props<{ updatedUser: User }>()
 );
 
-export const updateUserFailure = createAction(
-  '[Users API] Update User Failure',
-  props<{ error: any }>()
-);
 export const removeUser = createAction(
   '[User Details Page || Users List Page] Remove User',
   props<{ id: string }>()
@@ -80,30 +70,18 @@ export const loadAccountsSuccess = createAction(
   '[Users API] User Accounts Success',
   props<{ accounts: Account[] }>()
 );
+export const showError = createAction(
+  '[Error] Show Error',
+  props<{ error: string }>()
+);
+export const clearError = createAction('[Error] Clear Error');
 
-export const loadUsersFailure = createAction(
-  '[Users API] User Load Failure',
-  props<{ error: string }>()
-);
-export const loadAccountsFailure = createAction(
-  '[Users API] Accounts Load Failure',
-  props<{ error: string }>()
-);
 export const sortUsersSuccess = createAction(
   '[Users List Page] Sort Users Success',
   props<{ sortedUsers: User[] }>()
-);
-export const sortUsersFailure = createAction(
-  '[Users] Sort Users Failure',
-  props<{ error: string }>()
 );
 
 export const filterUsersSuccess = createAction(
   '[Users List Page] Filter Users Success',
   props<{ filteredUsers: User[] }>()
-);
-
-export const filterUsersFailure = createAction(
-  '[Users] Filter Users Failure',
-  props<{ error: string }>()
 );

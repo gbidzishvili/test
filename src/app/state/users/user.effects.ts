@@ -5,16 +5,12 @@ import { Store } from '@ngrx/store';
 import { UsersService } from '../../features/users/services/users.service';
 import {
   addAccount,
-  addAccountFailure,
   addAccountSuccess,
   addUser,
-  addUserFailure,
   addUserSuccess,
   loadAccounts,
-  loadAccountsFailure,
   loadAccountsSuccess,
   loadUsers,
-  loadUsersFailure,
   loadUsersSuccess,
   removeAccount,
   removeAccountFailure,
@@ -22,8 +18,8 @@ import {
   removeUser,
   removeUserFailure,
   removeUserSuccess,
+  showError,
   updateUser,
-  updateUserFailure,
   updateUserSuccess,
 } from './user.action';
 import { catchError, map, mergeMap, of, switchMap, tap } from 'rxjs';
@@ -43,7 +39,7 @@ export class UserEffects {
       switchMap(({ user }) =>
         this.usersService.addUser(user).pipe(
           map(() => addUserSuccess({ user })),
-          catchError((error) => of(addUserFailure({ error })))
+          catchError((error) => of(showError({ error })))
         )
       )
     )
@@ -65,7 +61,7 @@ export class UserEffects {
       switchMap(({ account }) =>
         this.accountService.addAccount(account).pipe(
           map(() => addAccountSuccess({ account })),
-          catchError((error) => of(addAccountFailure({ error })))
+          catchError((error) => of(showError({ error })))
         )
       )
     )
@@ -88,7 +84,7 @@ export class UserEffects {
       mergeMap(({ id, updatedUser: updateUser }) =>
         this.usersService.updateUser(id, updateUser).pipe(
           map((response) => updateUserSuccess({ updatedUser: response })),
-          catchError((error) => of(updateUserFailure({ error })))
+          catchError((error) => of(showError({ error })))
         )
       )
     )
@@ -99,7 +95,7 @@ export class UserEffects {
       switchMap(() =>
         this.usersService.loadAllUsers().pipe(
           map((users: User[]) => loadUsersSuccess({ users })),
-          catchError((error) => of(loadUsersFailure({ error })))
+          catchError((error) => of(showError({ error })))
         )
       )
     )
@@ -110,7 +106,7 @@ export class UserEffects {
       switchMap(({ id }) =>
         this.accountService.loadAllAccounts(id).pipe(
           map((accounts: Account[]) => loadAccountsSuccess({ accounts })),
-          catchError((error) => of(loadAccountsFailure({ error })))
+          catchError((error) => of(showError({ error })))
         )
       )
     )

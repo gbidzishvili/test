@@ -4,6 +4,7 @@ import { NavigationComponent } from './core/components/navigation/navigation.com
 import { NgClass } from '@angular/common';
 import { SidenavToggleService } from './core/components/navigation/services/sidenav-toggle.service';
 import { HeaderComponent } from './core/components/header/header.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
@@ -16,4 +17,14 @@ import { HeaderComponent } from './core/components/header/header.component';
 export class AppComponent {
   title = 'ng-space-project';
   sidenavToggleService = inject(SidenavToggleService);
+  private translate = inject(TranslateService);
+
+  constructor() {
+    this.translate.setDefaultLang('ka');
+    this.translate.use('ka');
+  }
+
+  changeLanguage(lang: string) {
+    this.translate.use(lang);
+  }
 }

@@ -12,11 +12,9 @@ import {
 } from 'rxjs';
 import {
   loadUsersSuccess,
-  loadUsersFailure,
-  filterUsersFailure,
   filterUsersSuccess,
-  sortUsersFailure,
   sortUsersSuccess,
+  showError,
 } from '../users/user.action';
 import {
   filterUsers,
@@ -49,7 +47,7 @@ export class FilterEffects {
               updateUsersTotalCount({ totalCount }),
             ];
           }),
-          catchError((error) => of(loadUsersFailure({ error: error.message })))
+          catchError((error) => of(showError({ error: error.message })))
         )
       )
     )
@@ -64,9 +62,7 @@ export class FilterEffects {
           map((filteredUsers: User[]) =>
             filterUsersSuccess({ filteredUsers: filteredUsers })
           ),
-          catchError((error) =>
-            of(filterUsersFailure({ error: error.message }))
-          )
+          catchError((error) => of(showError({ error: error.message })))
         )
       )
     )
@@ -82,7 +78,7 @@ export class FilterEffects {
               updateSort({ sortBy: sortLabel }),
             ];
           }),
-          catchError((error) => of(sortUsersFailure({ error: error.message })))
+          catchError((error) => of(showError({ error: error.message })))
         )
       )
     )

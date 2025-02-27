@@ -17,3 +17,7 @@ export const selectUsersLoaded = createSelector(
   selectUser,
   (usersState) => usersState.status === 'success' && usersState.users.length > 0
 );
+export const selectErrorMessage = createSelector(
+  selectUser,
+  (state) => state.error
+);

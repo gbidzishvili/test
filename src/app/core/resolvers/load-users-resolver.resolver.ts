@@ -11,6 +11,7 @@ import {
   updateSort,
   updateUsersTotalCount,
 } from '../../state/filter/filter.actions';
+import { throwError } from 'rxjs';
 
 export const loadUsersResolver: ResolveFn<any> = (route, state) => {
   const usersService = inject(UsersService);

@@ -1,0 +1,7 @@
+{
+  "errors": {
+    "unknownError": "An unknown error occurred.",
+    "clientError": "Client-side error: {{message}}",
+    "serverError": "Server error ({{code}}): {{message}}"
+  }
+}

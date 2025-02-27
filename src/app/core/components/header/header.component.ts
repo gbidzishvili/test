@@ -8,6 +8,7 @@ import { SidenavToggleService } from '../navigation/services/sidenav-toggle.serv
 import { CommonModule } from '@angular/common';
 import { ClickOutsideDirective } from '../../../shared/directives/click-outside.directive';
 import { RouterLink, RouterOutlet } from '@angular/router';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-header',
@@ -18,6 +19,8 @@ import { RouterLink, RouterOutlet } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
+  private translate = inject(TranslateService);
+
   sidenavToggleService = inject(SidenavToggleService);
   isMenuOpen = signal(false);
   toggleSidebar() {
@@ -30,5 +33,9 @@ export class HeaderComponent {
   }
   closeMenu() {
     this.isMenuOpen.set(false);
+  }
+  changeLanguage(event: Event): void {
+    const selectedLanguage = (event.target as HTMLSelectElement).value;
+    this.translate.use(selectedLanguage);
   }
 }
